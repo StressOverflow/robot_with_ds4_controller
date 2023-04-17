@@ -12,19 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef AVOID_OBSTACLE_CPP__AVOIDOBSTACLENODE_HPP_
-#define AVOID_OBSTACLE_CPP__AVOIDOBSTACLENODE_HPP_
+#ifndef CONTROLLER_CPP__CONTROLLERNODE_HPP_
+#define CONTROLLER_CPP__CONTROLLERNODE_HPP_
 
-#include "sensor_msgs/msg/laser_scan.hpp"
+
 #include "geometry_msgs/msg/twist.hpp"
-#include "kobuki_ros_interfaces/msg/button_event.hpp"
-#include "kobuki_ros_interfaces/msg/bumper_event.hpp"
-#include "kobuki_ros_interfaces/msg/wheel_drop_event.hpp"
-#include "kobuki_ros_interfaces/msg/led.hpp"
-#include "kobuki_ros_interfaces/msg/sound.hpp"
+#include "ds4_driver_msgs/msg/Status.msg"
+
 #include "rclcpp/rclcpp.hpp"
 
-namespace avoid_obstacle_cpp
+namespace controller_cpp
 {
 
 using namespace std::chrono_literals;  // NOLINT
@@ -107,6 +104,6 @@ private:
   bool check_back_2_yaw_turn_in();
 };
 
-}  // namespace avoid_obstacle_cpp
+}  // namespace controller_cpp
 
-#endif  // AVOID_OBSTACLE_CPP__AVOIDOBSTACLENODE_HPP_
+#endif  // CONTROLLER_CPP__CONTROLLERNODE_HPP_
