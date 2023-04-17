@@ -28,21 +28,16 @@ def generate_launch_description():
         'params.yaml'
         )
 
-    avoidObstacles_cmd = Node(package='avoid_obstacle_cpp',
-                              executable='avoidObstacle',
+    avoidObstacles_cmd = Node(package='map_with_controller',
+                              executable='controller',
                               output='screen',
                               parameters=[{
-                                'use_sim_time': True
+                                'use_sim_time': False
                               }, params_file],
                               remappings=[
-                                ('input_scan', '/scan_filtered'),
                                 ('output_vel', '/cmd_vel'),
-                                ('input_button', '/events/button'),
-                                ('lidar_led', '/commands/led2'),
-                                ('status_led', '/commands/led1'),
-                                ('output_sound', '/commands/sound'),
-                                ('input_bumper', '/events/bumper'),
-                                ('input_wheel_drop', '/events/wheel_drop')
+                                ('controller_status', '/status'),
+                                ('controller_feedback', '/set_feedback'),
                               ])
 
     ld = LaunchDescription()

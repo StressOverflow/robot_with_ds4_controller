@@ -7,26 +7,22 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(kobuki_ros_interfaces REQUIRED)
 
 set(dependencies
   rclcpp
-  sensor_msgs
   geometry_msgs
-  kobuki_ros_interfaces
 )
 
 include_directories(include)
 
-add_executable(avoidObstacle
-  src/avoid_obstacle_cpp/AvoidObstacleNode.cpp
-  src/avoid_obstacle_cpp/LidarLedFeedbackNode.cpp
-  src/avoidObstacle_main.cpp
+add_executable(controller
+  src/controller_cpp/ControllerNode.cpp
+  src/controller_main.cpp
 )
-ament_target_dependencies(avoidObstacle ${dependencies})
+ament_target_dependencies(controller ${dependencies})
 
 install(TARGETS
-  avoidObstacle
+  controller
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}

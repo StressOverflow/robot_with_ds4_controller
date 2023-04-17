@@ -15,13 +15,7 @@
 #ifndef AVOID_OBSTACLE_CPP__AVOIDOBSTACLENODE_HPP_
 #define AVOID_OBSTACLE_CPP__AVOIDOBSTACLENODE_HPP_
 
-#include "sensor_msgs/msg/laser_scan.hpp"
 #include "geometry_msgs/msg/twist.hpp"
-#include "kobuki_ros_interfaces/msg/button_event.hpp"
-#include "kobuki_ros_interfaces/msg/bumper_event.hpp"
-#include "kobuki_ros_interfaces/msg/wheel_drop_event.hpp"
-#include "kobuki_ros_interfaces/msg/led.hpp"
-#include "kobuki_ros_interfaces/msg/sound.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 namespace avoid_obstacle_cpp
