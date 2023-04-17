@@ -17,8 +17,14 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
 from launch_ros.actions import Node
 
+import yaml
+
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
@@ -28,7 +34,7 @@ def generate_launch_description():
         'params.yaml'
         )
 
-    avoidObstacles_cmd = Node(package='map_with_controller',
+    controller_cmd = Node(package='map_with_controller',
                               executable='controller',
                               output='screen',
                               parameters=[{
@@ -39,8 +45,16 @@ def generate_launch_description():
                                 ('controller_status', '/status'),
                                 ('controller_feedback', '/set_feedback'),
                               ])
+    
+    # driver_cmd = IncludeLaunchDescription(
+    #               PythonLaunchDescriptionSource([
+    #               FindPackageShare('ds4_driver'),
+    #                                '/launch',
+    #                                '/ds4_driver.launch.xml'])
+    #             )
 
     ld = LaunchDescription()
-    ld.add_action(avoidObstacles_cmd)
+    ld.add_action(controller_cmd)
+    # ld.add_action(driver_cmd)
 
     return ld

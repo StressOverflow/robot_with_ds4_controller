@@ -33,16 +33,21 @@ public:
   ControllerNode();
 
 private:
+  const float MAX_LINEAR_VEL_ = 0.25f;
+  const float MAX_ANGULAR_VEL_ = 1.0f;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
   rclcpp::Subscription<ds4_driver_msgs::msg::Status>::SharedPtr controller_sub_;
 
   rclcpp::TimerBase::SharedPtr timer_;
+  rclcpp::Time controller_ts_;
 
   ds4_driver_msgs::msg::Status::UniquePtr last_controller_status_;
 
   void controller_callback(ds4_driver_msgs::msg::Status::UniquePtr msg);
   void control_cycle();
+
+  float value_map(float value, float in_min, float in_max, float out_min, float out_max);
 };
 
 }  // namespace controller_cpp
