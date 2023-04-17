@@ -18,7 +18,7 @@
 
 #include "geometry_msgs/msg/twist.hpp"
 
-#include "ds4_driver_msgs/msg/Status.msg"
+#include "ds4_driver_msgs/msg/status.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 

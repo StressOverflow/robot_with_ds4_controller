@@ -21,7 +21,7 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto controller_node = std::make_shared<map_with_controller::ControllerNode>();
+  auto controller_node = std::make_shared<controller_cpp::ControllerNode>();
 
   rclcpp::spin(controller_node);
 

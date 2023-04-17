@@ -17,7 +17,7 @@
 #include "controller_cpp/ControllerNode.hpp"
 
 #include "geometry_msgs/msg/twist.hpp"
-#include "ds4_driver_msgs/msg/Status.msg"
+#include "ds4_driver_msgs/msg/status.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -29,18 +29,17 @@ using namespace std::chrono_literals;
 using std::placeholders::_1;
 
 ControllerNode::ControllerNode()
-: Node("controllerNode"),
-  state_(INNIT)
+: Node("controllerNode")
 {
   vel_pub_ = create_publisher<geometry_msgs::msg::Twist>("output_vel", 10);
 
-  controller_sub_ = create_subscription<ds4_diver_mgs::msg::Status>(
+  controller_sub_ = create_subscription<ds4_driver_msgs::msg::Status>(
     "controller_status", rclcpp::SensorDataQoS(),
     std::bind(&ControllerNode::controller_callback, this, _1));
 }
 
 void
-ControllerNode::controller_callback(ds4_diver_mgs::msg::Status::UniquePtr msg)
+ControllerNode::controller_callback(ds4_driver_msgs::msg::Status::UniquePtr msg)
 {
   last_controller_status_ = std::move(msg);
 }
@@ -55,7 +54,7 @@ ControllerNode::control_cycle()
     return;
   }
 
-  geometry_msgs::msg::Twist out_vel;
+  //geometry_msgs::msg::Twist out_vel;
 
   vel_pub_->publish(out_vel);
 }
