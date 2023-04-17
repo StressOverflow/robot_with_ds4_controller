@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>avoid_obstacle_cpp</name>
+  <name>map_with_controller</name>
   <version>1.0.0</version>
-  <description>This package contains the first exercise of ASR-2023 from URJC Robotics Software Engineering</description>
+  <description>This package allows you to use the mapping algorithm of ir_robots with a ds4 controller.</description>
   <maintainer email="c.escarcena.2021@alumnos.urjc.es">Carlos Escarcena</maintainer>
   <maintainer email="d.garciac.2021@alumnos.urjc.es">Diego García</maintainer>
   <maintainer email="a.garciab.2021@alumnos.urjc.es">Arantxa García</maintainer>
@@ -14,8 +14,6 @@
 
   <depend>rclcpp</depend>
   <depend>geometry_msgs</depend>
-  <depend>sensor_msgs</depend>
-  <depend>kobuki_ros_interfaces</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
