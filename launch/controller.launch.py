@@ -23,7 +23,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     params_file = os.path.join(
-        get_package_share_directory('avoid_obstacle_cpp'),
+        get_package_share_directory('controller_cpp'),
         'config',
         'params.yaml'
         )
