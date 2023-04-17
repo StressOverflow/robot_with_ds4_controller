@@ -36,6 +36,8 @@ ControllerNode::ControllerNode()
   controller_sub_ = create_subscription<ds4_driver_msgs::msg::Status>(
     "controller_status", rclcpp::SensorDataQoS(),
     std::bind(&ControllerNode::controller_callback, this, _1));
+  
+  timer_ = create_wall_timer(25ms, std::bind(&ControllerNode::control_cycle, this));
 }
 
 void
@@ -55,8 +57,11 @@ ControllerNode::control_cycle()
   }
 
   //geometry_msgs::msg::Twist out_vel;
+  if(last_controller_status_->button_cross){
+    RCLCPP_INFO(this->get_logger(), "Cross");
+  }
 
-  vel_pub_->publish(out_vel);
+  //vel_pub_->publish(out_vel);
 }
 
 }  // namespace controller_cpp
