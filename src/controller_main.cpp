@@ -14,26 +14,16 @@
 
 #include <memory>
 
-#include "avoid_obstacle_cpp/AvoidObstacleNode.hpp"
-#include "avoid_obstacle_cpp/LidarLedFeedbackNode.hpp"
+#include "controller_cpp/ControllerNode.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto avoidObstacle_node = std::make_shared<avoid_obstacle_cpp::AvoidObstacleNode>();
-  auto lidarLedFeedback_node = std::make_shared<lidar_led_feedback_cpp::LidarLedFeedbackNode>();
+  auto controller_node = std::make_shared<map_with_controller::ControllerNode>();
 
-  rclcpp::executors::SingleThreadedExecutor executor;
-
-  executor.add_node(avoidObstacle_node);
-  executor.add_node(lidarLedFeedback_node);
-
-  RCLCPP_INFO(avoidObstacle_node->get_logger(), "Init Avoid Obstacle Node");
-  RCLCPP_INFO(lidarLedFeedback_node->get_logger(), "Init Lidar Led Feedback Node");
-
-  executor.spin();
+  rclcpp::spin(controller_node);
 
   rclcpp::shutdown();
 
