@@ -1,0 +1,5 @@
+repositories:
+  ThirdParty/perception_asr_stressoverflow:
+    type: git
+    url: https://github.com/dgarcu/perception_asr_stressoverflow.git
+    version: main
