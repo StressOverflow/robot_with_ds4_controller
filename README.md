@@ -55,5 +55,22 @@ Once finished, you need to import the  **third party** repos that we will need. 
 vcs import < map_with_controller/thirdparty.repos
 ```
 
+### Installation and Usage 
+
+This driver depends on `ds4drv`. Some features of this driver depend on pull
+requests have not yet been merged upstream. Until they are merged, use
+[`naoki-mizuno/ds4drv`](https://github.com/naoki-mizuno/ds4drv/tree/devel)
+(`devel` branch).
+
+```console
+$ cd ds4drv
+$ mkdir -p ~/.local/lib/python3.10/site-packages
+$ python3 setup.py install --prefix ~/.local
+# Note: udev directory is in the ds4drv repo, not ds4_driver (this repo)
+$ sudo cp udev/50-ds4drv.rules /etc/udev/rules.d/
+$ sudo udevadm control --reload-rules
+$ sudo udevadm trigger
+```
+
 Compile and source this package just like any other ROS package. To run,
 
