@@ -55,7 +55,7 @@ Once finished, you need to import the  **third party** repos that we will need. 
 vcs import < map_with_controller/thirdparty.repos
 ```
 
-### Installation and Usage 
+### Installation 
 
 This driver depends on `ds4drv`. Some features of this driver depend on pull
 requests have not yet been merged upstream. Until they are merged, use
@@ -63,14 +63,57 @@ requests have not yet been merged upstream. Until they are merged, use
 (`devel` branch).
 
 ```console
-$ cd ds4drv
+$ cd Thirdparty/ds4drv
 $ mkdir -p ~/.local/lib/python3.10/site-packages
 $ python3 setup.py install --prefix ~/.local
-# Note: udev directory is in the ds4drv repo, not ds4_driver (this repo)
 $ sudo cp udev/50-ds4drv.rules /etc/udev/rules.d/
 $ sudo udevadm control --reload-rules
 $ sudo udevadm trigger
 ```
 
 Compile and source this package just like any other ROS package. To run,
+
+```console
+$ ros2 launch map_with_controller controller.launch.py
+```
+
+### Using
+
+ds4drv has two different modes to find DS4 devices, decide which one to use
+depending on your use case. Raw bluetooth mode and hidraw mode. The fisrt one 
+is not supported yet beacuse the bluetooth protocolos are not as fast as de USB
+portocols. So we use Hidraw mode
+
+This mode uses the Linux kernel feature *hidraw* to talk to already existing
+devices on the system.
+
+To use the DS4 via USB in this mode, simply connect your DS4 to your computer via
+a micro USB cable.
+  
+When the controller is paired, the launcher will show it, then you can start to use it.
+
+### Controls
+
+- Move forward: **R2**
+- Move backward: **L2**
+- Turn: **Left joystick**
+
+## Features
+
+https://github.com/naoki-mizuno/ds4_driver.git
+
+https://github.com/naoki-mizuno/ds4drv.git
+
+https://github.com/chrippa/ds4drv.git
+
+## License
+
+Apache 2.0
+
+## Authors
+
+Carlos Escarcena (c.escarcena.2021@alumnos.urjc.es)
+
+Diego García (d.garciac.2021@alumnos.urjc.es)
+
 
