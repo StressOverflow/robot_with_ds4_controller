@@ -45,16 +45,17 @@ def generate_launch_description():
                                 ('controller_status', '/status'),
                                 ('controller_feedback', '/set_feedback'),
                               ])
+
+    ds4_driver = Node(package='ds4_driver',
+                              executable='ds4_driver_node.py',
+                              output='screen',
+                              parameters=[{
+                                  'use_sim_time': False
+                              }])
     
-    # driver_cmd = IncludeLaunchDescription(
-    #               PythonLaunchDescriptionSource([
-    #               FindPackageShare('ds4_driver'),
-    #                                '/launch',
-    #                                '/ds4_driver.launch.xml'])
-    #             )
 
     ld = LaunchDescription()
     ld.add_action(controller_cmd)
-    # ld.add_action(driver_cmd)
+    ld.add_action(ds4_driver)
 
     return ld
