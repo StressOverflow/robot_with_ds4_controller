@@ -4,10 +4,6 @@
 [![distro](https://img.shields.io/badge/ROS2-Humble-blue)](https://docs.ros.org/en/humble/index.html)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)](https://isocpp.org/)
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/kobuki-base/kobuki_core/devel/resources/kobuki.png"/>
-</p>
-
 ## Installation 💾
 
 ### Main requirements ✅
