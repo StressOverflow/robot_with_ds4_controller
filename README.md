@@ -40,7 +40,22 @@ but you may want to use your distro's packages if available:
 
 Installing the latest release is simple by using [pip](http://www.pip-installer.org/):
 
-´´´bash
-
+``` bash
     $ sudo pip install ds4drv
-´´´
+```
+Once we have everything installed, clone this repo to your `src` path, like so:
+
+```bash
+cd <your-workspace-path>/src
+git clone https://github.com/Docencia-fmrico/seekandcapture-stressoverflow.git
+```
+
+Once finished, you need to import the  **third party** repos that we will need. This will clone into your `ThirdParty` dir the [**ds4_driver package**](https://github.com/naoki-mizuno/ds4_driver.git):
+
+```bash
+vcs import < map_with_controller/thirdparty.repos
+```
+
+
+Compile and source this package just like any other ROS package. To run,
+
