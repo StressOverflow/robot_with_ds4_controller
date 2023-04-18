@@ -3,7 +3,6 @@
 [![distro](https://img.shields.io/badge/Ubuntu%2022-Jammy%20Jellyfish-violet)](https://releases.ubuntu.com/22.04/)
 [![distro](https://img.shields.io/badge/ROS2-Humble-blue)](https://docs.ros.org/en/humble/index.html)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)](https://isocpp.org/)
-[![main](https://github.com/Docencia-fmrico/seekandcapture-stressoverflow/actions/workflows/colcon.yaml/badge.svg?branch=SeekAndCapture)](https://github.com/Docencia-fmrico/seekandcapture-stressoverflow/actions/workflows/colcon.yaml)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/kobuki-base/kobuki_core/devel/resources/kobuki.png"/>
@@ -47,7 +46,7 @@ Once we have everything installed, clone this repo to your `src` path, like so:
 
 ```bash
 cd <your-workspace-path>/src
-git clone https://github.com/Docencia-fmrico/seekandcapture-stressoverflow.git
+git clone https://github.com/dgarcu/mapwithcontroller.git
 ```
 
 Once finished, you need to import the  **third party** repos that we will need. This will clone into your `ThirdParty` dir the [**ds4_driver package**](https://github.com/naoki-mizuno/ds4_driver.git):
@@ -55,7 +54,6 @@ Once finished, you need to import the  **third party** repos that we will need. 
 ```bash
 vcs import < map_with_controller/thirdparty.repos
 ```
-
 
 Compile and source this package just like any other ROS package. To run,
 
