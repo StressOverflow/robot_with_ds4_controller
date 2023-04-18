@@ -2,4 +2,4 @@ repositories:
   ThirdParty/ds4_driver
     type: git
     url: https://github.com/naoki-mizuno/ds4_driver.git
-    version: main
+    version: humble-devel
