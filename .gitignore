@@ -1,0 +1,8 @@
+# Ignore directories
+.vscode/
+build/
+install/
+log/
+
+# Ignore files
+*.log
