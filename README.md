@@ -70,6 +70,8 @@ $ sudo udevadm trigger
 $ cd <your-workspace-path>/src/ThirdParty/ds4drv
 $ sed -i '5d;6d;15d' setup.py
 
+```
+
 Compile and source this package just like any other ROS package. To run,
 
 ```console
