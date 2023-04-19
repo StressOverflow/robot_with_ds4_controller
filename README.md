@@ -48,7 +48,7 @@ git clone https://github.com/dgarcu/mapwithcontroller.git
 Once finished, you need to import the  **third party** repos that we will need. This will clone into your `ThirdParty` dir the [**ds4_driver package**](https://github.com/naoki-mizuno/ds4_driver.git):
 
 ```bash
-vcs import < map_with_controller/thirdparty.repos
+vcs import --recursive < mapwithcontroller/thirdparty.repos
 ```
 
 ### Installation 
@@ -65,9 +65,6 @@ $ python3 setup.py install --prefix ~/.local
 $ sudo cp udev/50-ds4drv.rules /etc/udev/rules.d/
 $ sudo udevadm control --reload-rules
 $ sudo udevadm trigger
-```
-```console
-$ cd <your-workspace-path>/src/ThirdParty/ds4drv
 $ sed -i '5d;6d;15d' setup.py
 
 ```
