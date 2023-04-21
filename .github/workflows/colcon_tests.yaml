@@ -1,0 +1,39 @@
+name: Colcon Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    container:
+      image: osrf/ros:humble-desktop
+    strategy:
+      matrix:
+        os: [ubuntu-22.04]
+      fail-fast: false
+    steps:
+      - name: Install deps
+        run: sudo apt-get update && sudo apt-get install -y wget python3-vcstool python3-colcon-coveragepy-result
+
+      - name: Run Tests
+        uses: ros-tooling/action-ros-ci@0.2.6
+        with:
+          package-name: map_with_controller
+          target-ros2-distro: humble
+          colcon-defaults: |
+            {
+              "test": {
+                "parallel-workers" : 1
+              }
+            }
+
+      - name: Upload Logs
+        uses: actions/upload-artifact@v1
+        with:
+          name: colcon-logs
+          path: ros_ws/log
+        if: always()
