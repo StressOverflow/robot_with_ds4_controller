@@ -21,12 +21,16 @@ jobs:
       
       - name: Install ds4drv
         run: sudo apt-get install -y python3-pip && sudo pip install ds4drv
+        
+      - name: Create custom repos
+        run: wget -O /tmp/all.repos https://raw.githubusercontent.com/dgarcu/mapwithcontroller/main/third_parties.repos
 
       - name: Run Tests
         uses: ros-tooling/action-ros-ci@0.2.6
         with:
           package-name: map_with_controller
           target-ros2-distro: humble
+          vcs-repo-file-url: /tmp/all.repos
           colcon-defaults: |
             {
               "test": {
