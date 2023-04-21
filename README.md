@@ -36,7 +36,7 @@ but you may want to use your distro's packages if available:
 Installing the latest release is simple by using [pip](http://www.pip-installer.org/):
 
 ``` bash
-    sudo pip install ds4drv
+sudo pip install ds4drv
 ```
 Once we have everything installed, clone this repo to your `src` path, like so:
 
