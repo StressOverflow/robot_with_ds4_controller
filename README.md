@@ -71,8 +71,9 @@ sed -i '5d;6d;15d' setup.py
 
 Compile and source this package just like any other ROS package. To run,
 
-```console
+```bash
 ros2 launch map_with_controller controller.launch.py
+
 ```
 
 ### Using
