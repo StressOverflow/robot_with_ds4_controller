@@ -59,20 +59,20 @@ requests have not yet been merged upstream. Until they are merged, use
 (`devel` branch).
 
 ```console
-$ cd Thirdparty/ds4drv
-$ mkdir -p ~/.local/lib/python3.10/site-packages
-$ python3 setup.py install --prefix ~/.local
-$ sudo cp udev/50-ds4drv.rules /etc/udev/rules.d/
-$ sudo udevadm control --reload-rules
-$ sudo udevadm trigger
-$ sed -i '5d;6d;15d' setup.py
+cd ThirdParty//ds4drv
+mkdir -p ~/.local/lib/python3.10/site-packages
+python3 setup.py install --prefix ~/.local
+sudo cp udev/50-ds4drv.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+sed -i '5d;6d;15d' setup.py
 
 ```
 
 Compile and source this package just like any other ROS package. To run,
 
 ```console
-$ ros2 launch map_with_controller controller.launch.py
+ros2 launch map_with_controller controller.launch.py
 ```
 
 ### Using
