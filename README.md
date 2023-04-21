@@ -3,7 +3,7 @@
 [![distro](https://img.shields.io/badge/Ubuntu%2022-Jammy%20Jellyfish-violet)](https://releases.ubuntu.com/22.04/)
 [![distro](https://img.shields.io/badge/ROS2-Humble-blue)](https://docs.ros.org/en/humble/index.html)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)](https://isocpp.org/)
-[![main](https://github.com/Docencia-fmrico/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml/badge.svg?branch=main)](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml)
+[![main](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml/badge.svg?branch=main)](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml)
 
 ## Installation 💾
 
