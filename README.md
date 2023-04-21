@@ -58,7 +58,7 @@ requests have not yet been merged upstream. Until they are merged, use
 [`naoki-mizuno/ds4drv`](https://github.com/naoki-mizuno/ds4drv/tree/devel)
 (`devel` branch).
 
-```console
+```bash
 cd ThirdParty//ds4drv
 mkdir -p ~/.local/lib/python3.10/site-packages
 python3 setup.py install --prefix ~/.local
