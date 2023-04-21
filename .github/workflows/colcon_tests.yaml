@@ -18,6 +18,9 @@ jobs:
     steps:
       - name: Install deps
         run: sudo apt-get update && sudo apt-get install -y wget python3-vcstool python3-colcon-coveragepy-result
+      
+      - name: Install ds4drv
+        run: sudo pip install ds4drv
 
       - name: Run Tests
         uses: ros-tooling/action-ros-ci@0.2.6
