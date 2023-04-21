@@ -105,18 +105,29 @@ https://github.com/naoki-mizuno/ds4drv.git
 
 https://github.com/chrippa/ds4drv.git
 
+## About
+
+This is a project made by the [StressOverflow], a student group from the [Universidad Rey Juan Carlos].
+Copyright &copy; 2023.
+
+Maintainers:
+
+- [Carlos Escarcena] (c.escarcena.2021@alumnos.urjc.es)
+- [Arantxa García] (a.garciab.2021@alumnos.urjc.es)
+- [Diego García] (d.garciac.2021@alumnos.urjc.es)
+- [Teresa Ortega] (mt.ortega.2021@alumnos.urjc.es)
+
 ## License
 
-Apache 2.0
+[![License](https://img.shields.io/badge/License-Apache_2.0-yellowgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0) 
 
-## Authors
+This work is licensed under a [APACHE LICENSE, VERSION 2.0][apache2.0].
 
-Carlos Escarcena (c.escarcena.2021@alumnos.urjc.es)
+[apache2.0]: https://www.apache.org/licenses/LICENSE-2.0
 
-Diego García (d.garciac.2021@alumnos.urjc.es)
-
-Arantxa García (a.garciab.2021@alumnos.urjc.es)
-
-María Teresa Ortega (mt.ortega.2021@alumnos.urjc.es)
-
-
+[Universidad Rey Juan Carlos]: https://www.urjc.es/
+[StressOverflow]: https://github.com/orgs/Docencia-fmrico/teams/stressoverflow
+[Carlos Escarcena]: https://github.com/cescarcena2021
+[Arantxa García]: https://github.com/arantxagb
+[Diego García]: https://github.com/dgarcu
+[Teresa Ortega]: https://github.com/mtortega2021
