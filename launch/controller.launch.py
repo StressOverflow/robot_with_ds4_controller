@@ -17,14 +17,8 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
 from launch_ros.actions import Node
 
-import yaml
-
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
@@ -35,24 +29,23 @@ def generate_launch_description():
         )
 
     controller_cmd = Node(package='map_with_controller',
-                              executable='controller',
-                              output='screen',
-                              parameters=[{
-                                'use_sim_time': False
-                              }, params_file],
-                              remappings=[
-                                ('output_vel', '/cmd_vel'),
-                                ('controller_status', '/status'),
-                                ('controller_feedback', '/set_feedback'),
-                              ])
+                          executable='controller',
+                          output='screen',
+                          parameters=[{
+                            'use_sim_time': False
+                          }, params_file],
+                          remappings=[
+                            ('output_vel', '/cmd_vel'),
+                            ('controller_status', '/status'),
+                            ('controller_feedback', '/set_feedback'),
+                          ])
 
     ds4_driver = Node(package='ds4_driver',
-                              executable='ds4_driver_node.py',
-                              output='screen',
-                              parameters=[{
-                                  'use_sim_time': False
-                              }])
-    
+                      executable='ds4_driver_node.py',
+                      output='screen',
+                      parameters=[{
+                          'use_sim_time': False
+                      }])
 
     ld = LaunchDescription()
     ld.add_action(controller_cmd)
