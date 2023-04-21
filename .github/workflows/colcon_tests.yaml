@@ -23,7 +23,7 @@ jobs:
         run: sudo apt-get install -y python3-pip && sudo pip install ds4drv
         
       - name: Create custom repos
-        run: wget -O /tmp/all.repos https://raw.githubusercontent.com/dgarcu/mapwithcontroller/main/third_parties.repos
+        run: wget -O /tmp/all.repos https://raw.githubusercontent.com/dgarcu/mapwithcontroller/main/thirdparty.repos
 
       - name: Run Tests
         uses: ros-tooling/action-ros-ci@0.2.6
