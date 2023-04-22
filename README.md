@@ -5,6 +5,16 @@
 [![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)](https://isocpp.org/)
 [![main](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml/badge.svg?branch=main)](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml)
 
+## Motivation 💡
+
+We ([StressOverflow]), as students of [Universidad Rey Juan Carlos], are starting to cut our teeth with [Nav2](https://navigation.ros.org/). Basically, the first step you have to accomplish if you want to navigate is to have a map to navigate with!
+
+We have been told that the best practice is to map manually by moving around the robot so that the perceived environment is as realistic as possible. So we started to operate the robot using the keyboard of our laptops; however, there was a problem. We are currently using [TurtleBot](https://www.turtlebot.com/turtlebot2/), and we lay our laptops right above the robot. So, in order to access the keyboard, we have to lay down every few steps to maneuver the robot. After a couple of hours, we realized that we will not be [*Forever Young*](https://www.youtube.com/watch?v=mwG6g5boyF4), so we need to take care of our backs!
+
+That was when we thought of using a controller to maneuver the robot from a comfortable and civilized position... And here we are.
+
+https://user-images.githubusercontent.com/92941081/233775494-aa1f4994-df3c-4415-9400-04e96f5c6f14.mp4
+
 ## Installation 💾
 
 ### Main requirements ✅
