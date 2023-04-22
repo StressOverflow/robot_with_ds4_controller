@@ -116,7 +116,7 @@ https://github.com/naoki-mizuno/ds4drv.git
 
 https://github.com/chrippa/ds4drv.git
 
-# Future improvements ✔️
+## Future improvements ✔️
 
 - [ ] Parameters. The maximum speed of the robot in each of the maneuvers should be modifiable without the need to recompile the code. Other types of parameters of interest would also be added.
 - [ ] "Dead-man" button. The controller should only work if one of the buttons is held down, as a safety feature.
