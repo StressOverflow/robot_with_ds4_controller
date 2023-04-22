@@ -3,6 +3,7 @@
 build/
 install/
 log/
+__pycache__/
 
 # Ignore files
 *.log
