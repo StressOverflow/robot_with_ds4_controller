@@ -102,11 +102,70 @@ a micro USB cable.
   
 When the controller is paired, the launcher will show it, then you can start to use it.
 
-### Controls
+### Controls 🕹️
+
+There is a dead-man button added as a safety feature. The robot will only move while said button is pressed.
+
+- dead-man button: **X**
 
 - Move forward: **R2**
 - Move backward: **L2**
 - Turn: **Left joystick**
+
+There is a `timestamp` with the last message received from the controller. If this `timestamp` exceeds a reasonable time, the robot will be stopped until new messages are detected. This could happen when the controller suddenly disconnects from the PC.
+
+### User feedback
+
+The controller will use some signals to indicate the status of the node.
+
+#### Controller connected.
+
+The controller will softly rumble for `1s`. Also, the LED bar will iluminate in steady blue light. 🔵
+
+![blue](./doc/img/blue.gif)
+
+#### Controller enabled.
+
+The controller will hardly rumble for `25ms`. Also, the LED bar will iluminate in steady green light. 🟢
+
+> This is the only mode where the robot will actually mode! Is activated by **HOLDING** the dead-man button.
+
+![green](./doc/img/green.gif)
+
+#### Controller disabled.
+
+The controller will iluminate it's LED bar with slowly blinking yellow light. 🟡
+
+![blinking_yellow](./doc/img/blinking_yellow.gif)
+
+### Params
+
+In [params.yaml](./config/params.yaml) you will be able to modify the maximum velocity of the robot.
+
+**However, as a security feature, it will be clamped by a maximum absolute velocity which is hardcoded.**
+
+```yaml
+controller_node:
+  ros__parameters:
+    max_linear_vel: 0.5
+    max_angular_vel: 1.0
+```
+
+If you need it, you could also change the velocity topic. You will find it on the [launcher](./launch/controller.launch.py).
+
+```yaml
+controller_cmd = Node(package='map_with_controller',
+                          executable='controller',
+                          output='screen',
+                          parameters=[{
+                            'use_sim_time': False
+                          }, params_file],
+                          remappings=[
+                            ('output_vel', '/cmd_vel'), # HERE!
+                            ('controller_status', '/status'),
+                            ('controller_feedback', '/set_feedback'),
+                          ])
+```
 
 ## Features
 
@@ -116,11 +175,15 @@ https://github.com/naoki-mizuno/ds4drv.git
 
 https://github.com/chrippa/ds4drv.git
 
+## Importat notes
+
+- **This package was only tested with an original DS4 Controller via USB. Bluetooth was not tested. DS4 Compatible Controllers were not tested either.**
+
 ## Future improvements ✔️
 
-- [ ] Parameters. The maximum speed of the robot in each of the maneuvers should be modifiable without the need to recompile the code. Other types of parameters of interest would also be added.
-- [ ] "Dead-man" button. The controller should only work if one of the buttons is held down, as a safety feature.
-- [ ] Feedback. The controller should notify the user when it is ready to operate the robot, either with lights or vibration, as well as the output of the terminal.
+- [x] Parameters. The maximum speed of the robot in each of the maneuvers should be modifiable without the need to recompile the code. Other types of parameters of interest would also be added if needed.
+- [x] "Dead-man" button. The controller should only work if one of the buttons is held down, as a safety feature.
+- [x] Feedback. The controller should notify the user when it is ready to operate the robot, either with lights or vibration, as well as the output of the terminal.
 - [ ] Kobuki dedicated branch. Although the package is designed for any robot, a specific branch for the Kobuki TurtleBot would allow it to use its resources, such as the speaker or the LEDs, to emit signals and feedback to the user.
 
 ## About

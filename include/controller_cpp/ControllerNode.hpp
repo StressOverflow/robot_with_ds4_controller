@@ -19,6 +19,7 @@
 #include "geometry_msgs/msg/twist.hpp"
 
 #include "ds4_driver_msgs/msg/status.hpp"
+#include "ds4_driver_msgs/msg/feedback.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -33,10 +34,19 @@ public:
   ControllerNode();
 
 private:
-  const float MAX_LINEAR_VEL_ = 0.25f;
-  const float MAX_ANGULAR_VEL_ = 1.0f;
+  bool controller_connected_ = false;
+  bool last_controller_connected_ = false;
+  bool controller_enabled_ = false;
+  bool last_controller_enabled_ = false;
+
+  float max_linear_vel_;
+  float max_angular_vel_;
+
+  static constexpr float ABS_MAX_LINEAR_VEL_ = 1.0f;
+  static constexpr float ABS_MAX_ANGULAR_VEL_ = 1.5f;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
+  rclcpp::Publisher<ds4_driver_msgs::msg::Feedback>::SharedPtr feedback_pub_;
   rclcpp::Subscription<ds4_driver_msgs::msg::Status>::SharedPtr controller_sub_;
 
   rclcpp::TimerBase::SharedPtr timer_;
@@ -48,6 +58,11 @@ private:
   void control_cycle();
 
   float value_map(float value, float in_min, float in_max, float out_min, float out_max);
+
+  void controller_connected_feedback();
+  void controller_disconnected_feedback();
+  void controller_enabled_feedback();
+  void controller_disabled_feedback();
 };
 
 }  // namespace controller_cpp

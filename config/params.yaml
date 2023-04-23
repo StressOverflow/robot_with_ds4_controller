@@ -1,0 +1,29 @@
+# Copyright (c) 2023 StressOverflow
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Options:
+#
+# max_linear_vel: Max linear velocity of the robot
+# max_angular_vel: Max angular velocity of the robot
+# 
+# Notes:
+# 
+#   1.- The robot will not move if both max_linear_vel and max_angular_vel are 0.0
+#   2.- The node will actually clamp the velocities to the max values hardcoded in the node.
+#   3.- Negative values are converted to positive values before clamping.
+
+controller_node:
+  ros__parameters:
+    max_linear_vel: 0.5
+    max_angular_vel: 1.0
