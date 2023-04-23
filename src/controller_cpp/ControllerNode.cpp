@@ -19,10 +19,6 @@
 
 #include "geometry_msgs/msg/twist.hpp"
 
-#include "kobuki_ros_interfaces/msg/bumper_event.hpp"
-#include "kobuki_ros_interfaces/msg/led.hpp"
-#include "kobuki_ros_interfaces/msg/sound.hpp"
-
 #include "ds4_driver_msgs/msg/status.hpp"
 #include "ds4_driver_msgs/msg/feedback.hpp"
 
@@ -54,17 +50,10 @@ ControllerNode::ControllerNode()
 
   vel_pub_ = create_publisher<geometry_msgs::msg::Twist>("output_vel", 10);
   feedback_pub_ = create_publisher<ds4_driver_msgs::msg::Feedback>("controller_feedback", 10);
-  led_1_pub_ = create_publisher<kobuki_ros_interfaces::msg::Led>("kobuki_led_1", 10);
-  led_2_pub_ = create_publisher<kobuki_ros_interfaces::msg::Led>("kobuki_led_2", 10);
-  sound_pub_ = create_publisher<kobuki_ros_interfaces::msg::Sound>("output_sound", 10);
 
   controller_sub_ = create_subscription<ds4_driver_msgs::msg::Status>(
     "controller_status", rclcpp::SensorDataQoS(),
     std::bind(&ControllerNode::controller_callback, this, _1));
-
-  bumper_sub_ = create_subscription<kobuki_ros_interfaces::msg::BumperEvent>(
-    "input_bumper", rclcpp::SensorDataQoS(),
-    std::bind(&ControllerNode::bumper_callback, this, _1));
 
   timer_ = create_wall_timer(25ms, std::bind(&ControllerNode::control_cycle, this));
 }
@@ -73,12 +62,6 @@ void
 ControllerNode::controller_callback(ds4_driver_msgs::msg::Status::UniquePtr msg)
 {
   last_controller_status_ = std::move(msg);
-}
-
-void
-ControllerNode::bumper_callback(kobuki_ros_interfaces::msg::BumperEvent::UniquePtr msg)
-{
-  // void by now
 }
 
 void
@@ -101,22 +84,26 @@ ControllerNode::control_cycle()
 
   if (last_controller_connected_ != controller_connected_) {
     if (controller_connected_) {
-      controller_connected_feedback();
+      send_feedback(ControllerState::CONNECTED);
     } else {
-      controller_disconnected_feedback();
+      send_feedback(ControllerState::DISCONNECTED);
     }
   }
 
   if (last_controller_enabled_ != controller_enabled_) {
     if (controller_enabled_) {
-      controller_enabled_feedback();
+      send_feedback(ControllerState::ENABLED);
     } else {
-      controller_disabled_feedback();
+      send_feedback(ControllerState::DISABLED);
     }
   }
 
   last_controller_connected_ = controller_connected_;
   last_controller_enabled_ = controller_enabled_;
+
+  if (last_c_state_ == ControllerState::DISABLED && now() - c_state_ts_ > 60s) {
+    send_feedback(ControllerState::IDLE);
+  }
 
   if (!controller_connected_ || !controller_enabled_) {
     out_vel.linear.x = 0.0;
@@ -156,12 +143,36 @@ ControllerNode::value_map(float value, float in_min, float in_max, float out_min
 }
 
 void
+ControllerNode::send_feedback(ControllerState state)
+{
+  switch (state) {
+    case ControllerState::DISCONNECTED:
+      controller_disconnected_feedback();
+      break;
+    case ControllerState::CONNECTED:
+      controller_connected_feedback();
+      break;
+    case ControllerState::IDLE:
+      controller_idle_feedback();
+      break;
+    case ControllerState::ENABLED:
+      controller_enabled_feedback();
+      break;
+    case ControllerState::DISABLED:
+      controller_disabled_feedback();
+      break;
+    default:
+      break;
+  }
+
+  c_state_ts_ = now();
+  last_c_state_ = state;
+}
+
+void
 ControllerNode::controller_connected_feedback()
 {
   ds4_driver_msgs::msg::Feedback controller_feedback;
-  kobuki_ros_interfaces::msg::Led out_led_1;
-  kobuki_ros_interfaces::msg::Led out_led_2;
-  kobuki_ros_interfaces::msg::Sound out_sound;
 
   controller_feedback.set_rumble = true;
   controller_feedback.rumble_small = 1.0f;
@@ -176,15 +187,7 @@ ControllerNode::controller_connected_feedback()
   controller_feedback.led_flash_on = 0.0f;
   controller_feedback.led_flash_off = 0.0f;
 
-  out_led_1.value = kobuki_ros_interfaces::msg::Led::GREEN;
-  out_led_2.value = kobuki_ros_interfaces::msg::Led::RED;
-
-  out_sound.value = kobuki_ros_interfaces::msg::Sound::ON;
-
   feedback_pub_->publish(controller_feedback);
-  led_1_pub_->publish(out_led_1);
-  led_2_pub_->publish(out_led_2);
-  sound_pub_->publish(out_sound);
 
   RCLCPP_INFO(get_logger(), "Controller connected");
 }
@@ -193,9 +196,6 @@ void
 ControllerNode::controller_disconnected_feedback()
 {
   ds4_driver_msgs::msg::Feedback controller_feedback;
-  kobuki_ros_interfaces::msg::Led out_led_1;
-  kobuki_ros_interfaces::msg::Led out_led_2;
-  kobuki_ros_interfaces::msg::Sound out_sound;
 
   controller_feedback.set_rumble = true;
   controller_feedback.rumble_big = 0.0f;
@@ -210,25 +210,38 @@ ControllerNode::controller_disconnected_feedback()
   controller_feedback.led_flash_on = 0.0f;
   controller_feedback.led_flash_off = 0.0f;
 
-  out_led_1.value = kobuki_ros_interfaces::msg::Led::RED;
-  out_led_2.value = kobuki_ros_interfaces::msg::Led::BLACK;
-
-  out_sound.value = kobuki_ros_interfaces::msg::Sound::OFF;
-
   feedback_pub_->publish(controller_feedback);
-  led_1_pub_->publish(out_led_1);
-  led_2_pub_->publish(out_led_2);
-  sound_pub_->publish(out_sound);
 
   RCLCPP_INFO(get_logger(), "Controller disconnected");
+}
+
+void
+ControllerNode::controller_idle_feedback()
+{
+  ds4_driver_msgs::msg::Feedback controller_feedback;
+
+  controller_feedback.set_rumble = true;
+  controller_feedback.rumble_big = 0.0f;
+  controller_feedback.rumble_duration = 0.0f;
+
+  controller_feedback.set_led = true;
+  controller_feedback.led_r = 0.0f;
+  controller_feedback.led_g = 0.0f;
+  controller_feedback.led_b = 60.0f;
+
+  controller_feedback.set_led_flash = true;
+  controller_feedback.led_flash_on = 0.0f;
+  controller_feedback.led_flash_off = 0.0f;
+
+  feedback_pub_->publish(controller_feedback);
+
+  RCLCPP_INFO(get_logger(), "Controller idle");
 }
 
 void
 ControllerNode::controller_enabled_feedback()
 {
   ds4_driver_msgs::msg::Feedback controller_feedback;
-  kobuki_ros_interfaces::msg::Led out_led_2;
-  kobuki_ros_interfaces::msg::Sound out_sound;
 
   controller_feedback.set_rumble = true;
   controller_feedback.rumble_big = 1.0f;
@@ -243,13 +256,7 @@ ControllerNode::controller_enabled_feedback()
   controller_feedback.led_flash_on = 0.0f;
   controller_feedback.led_flash_off = 0.0f;
 
-  out_led_2.value = kobuki_ros_interfaces::msg::Led::GREEN;
-
-  out_sound.value = kobuki_ros_interfaces::msg::Sound::CLEANINGSTART;
-
   feedback_pub_->publish(controller_feedback);
-  led_2_pub_->publish(out_led_2);
-  sound_pub_->publish(out_sound);
 
   RCLCPP_INFO(get_logger(), "Controller enabled");
 }
@@ -258,8 +265,6 @@ void
 ControllerNode::controller_disabled_feedback()
 {
   ds4_driver_msgs::msg::Feedback controller_feedback;
-  kobuki_ros_interfaces::msg::Led out_led_2;
-  kobuki_ros_interfaces::msg::Sound out_sound;
 
   controller_feedback.set_led = true;
   controller_feedback.led_r = 255.0f;
@@ -270,13 +275,7 @@ ControllerNode::controller_disabled_feedback()
   controller_feedback.led_flash_on = 0.05f;
   controller_feedback.led_flash_off = 2.0f;
 
-  out_led_2.value = kobuki_ros_interfaces::msg::Led::ORANGE;
-
-  out_sound.value = kobuki_ros_interfaces::msg::Sound::CLEANINGEND;
-
   feedback_pub_->publish(controller_feedback);
-  led_2_pub_->publish(out_led_2);
-  sound_pub_->publish(out_sound);
 
   RCLCPP_INFO(get_logger(), "Controller disabled");
 }

@@ -1,4 +1,4 @@
-// Copyright 2023 StressOverflow
+// Copyright 2023 (c) StressOverflow
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,12 +15,7 @@
 #ifndef CONTROLLER_CPP__CONTROLLERNODE_HPP_
 #define CONTROLLER_CPP__CONTROLLERNODE_HPP_
 
-
 #include "geometry_msgs/msg/twist.hpp"
-
-#include "kobuki_ros_interfaces/msg/bumper_event.hpp"
-#include "kobuki_ros_interfaces/msg/led.hpp"
-#include "kobuki_ros_interfaces/msg/sound.hpp"
 
 #include "ds4_driver_msgs/msg/status.hpp"
 #include "ds4_driver_msgs/msg/feedback.hpp"
@@ -43,6 +38,19 @@ private:
   bool controller_enabled_ = false;
   bool last_controller_enabled_ = false;
 
+  enum class ControllerState
+  {
+    DISCONNECTED,
+    CONNECTED,
+    IDLE,
+    ENABLED,
+    DISABLED
+  };
+
+  ControllerState c_state_ = ControllerState::DISCONNECTED;
+  ControllerState last_c_state_ = ControllerState::DISCONNECTED;
+  rclcpp::Time c_state_ts_;
+
   float max_linear_vel_;
   float max_angular_vel_;
   float controller_timeout_;
@@ -52,25 +60,23 @@ private:
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
   rclcpp::Publisher<ds4_driver_msgs::msg::Feedback>::SharedPtr feedback_pub_;
-  rclcpp::Publisher<kobuki_ros_interfaces::msg::Led>::SharedPtr led_1_pub_;
-  rclcpp::Publisher<kobuki_ros_interfaces::msg::Led>::SharedPtr led_2_pub_;
-  rclcpp::Publisher<kobuki_ros_interfaces::msg::Sound>::SharedPtr sound_pub_;
 
   rclcpp::Subscription<ds4_driver_msgs::msg::Status>::SharedPtr controller_sub_;
-  rclcpp::Subscription<kobuki_ros_interfaces::msg::BumperEvent>::SharedPtr bumper_sub_;
 
   rclcpp::TimerBase::SharedPtr timer_;
 
   ds4_driver_msgs::msg::Status::UniquePtr last_controller_status_;
 
   void controller_callback(ds4_driver_msgs::msg::Status::UniquePtr msg);
-  void bumper_callback(kobuki_ros_interfaces::msg::BumperEvent::UniquePtr msg);
   void control_cycle();
 
   float value_map(float value, float in_min, float in_max, float out_min, float out_max);
 
+  void send_feedback(ControllerState);
+
   void controller_connected_feedback();
   void controller_disconnected_feedback();
+  void controller_idle_feedback();
   void controller_enabled_feedback();
   void controller_disabled_feedback();
 };

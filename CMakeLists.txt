@@ -7,13 +7,11 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(ds4_driver_msgs REQUIRED)
-find_package(kobuki_ros_interfaces REQUIRED)
 
 set(dependencies
   rclcpp
   geometry_msgs
   ds4_driver_msgs
-  kobuki_ros_interfaces
 )
 
 include_directories(include)

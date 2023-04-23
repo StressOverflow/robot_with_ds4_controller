@@ -140,6 +140,8 @@ The controller will hardly rumble for `25ms`. Also, the LED bar will iluminate i
 
 The controller will iluminate it's LED bar with slowly blinking yellow light. 🟡
 
+> After `60s` in this state, the controller will change to `IDLE` mode. The light will became steady dim blue 🔵.
+
 ![blinking_yellow](./doc/img/blinking_yellow.gif)
 
 ### Params
