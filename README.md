@@ -104,9 +104,28 @@ When the controller is paired, the launcher will show it, then you can start to 
 
 ### Controls
 
+There is a dead-man button added as a safety feature. The robot will only move while said button is pressed.
+
+- dead-man button: **X**
+
 - Move forward: **R2**
 - Move backward: **L2**
 - Turn: **Left joystick**
+
+There is a `timestamp` with the last message received from the controller. If this `timestamp` exceeds a reasonable time, the robot will be stopped until new messages are detected. This could happen when the controller suddenly disconnects from the PC.
+
+### Params
+
+In [params.yaml](./config/params.yaml) you will be able to modify the maximum velocity of the robot.
+
+**However, as a security feature, it will be clamped by a maximum absolute velocity which is hardcoded.**
+
+```yaml
+controller_node:
+  ros__parameters:
+    max_linear_vel: 0.5
+    max_angular_vel: 1.0
+```
 
 ## Features
 
@@ -118,9 +137,9 @@ https://github.com/chrippa/ds4drv.git
 
 ## Future improvements ✔️
 
-- [ ] Parameters. The maximum speed of the robot in each of the maneuvers should be modifiable without the need to recompile the code. Other types of parameters of interest would also be added.
-- [ ] "Dead-man" button. The controller should only work if one of the buttons is held down, as a safety feature.
-- [ ] Feedback. The controller should notify the user when it is ready to operate the robot, either with lights or vibration, as well as the output of the terminal.
+- [x] Parameters. The maximum speed of the robot in each of the maneuvers should be modifiable without the need to recompile the code. Other types of parameters of interest would also be added if needed.
+- [x] "Dead-man" button. The controller should only work if one of the buttons is held down, as a safety feature.
+- [x] Feedback. The controller should notify the user when it is ready to operate the robot, either with lights or vibration, as well as the output of the terminal.
 - [ ] Kobuki dedicated branch. Although the package is designed for any robot, a specific branch for the Kobuki TurtleBot would allow it to use its resources, such as the speaker or the LEDs, to emit signals and feedback to the user.
 
 ## About
