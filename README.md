@@ -128,7 +128,7 @@ The controller will softly rumble for `1s`. Also, the LED bar will iluminate in 
 
 The controller will hardly rumble for `25ms`. Also, the LED bar will iluminate in steady green light. 🟢
 
-> This is the only mode where the robot will actually mode! Is activated by **HOLDING** the dead-man button.
+> This is the only mode where the robot will actually move! Is activated by **HOLDING** the dead-man button.
 
 ![green](./doc/img/green.gif)
 
