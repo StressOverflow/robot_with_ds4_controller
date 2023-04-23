@@ -44,7 +44,7 @@ def generate_launch_description():
                       executable='ds4_driver_node.py',
                       output='screen',
                       parameters=[{
-                          'use_sim_time': True
+                          'use_sim_time': False
                       }])
 
     ld = LaunchDescription()

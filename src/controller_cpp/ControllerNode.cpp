@@ -35,7 +35,7 @@ ControllerNode::ControllerNode()
 {
   declare_parameter<float>("max_linear_vel", 0.5f);
   declare_parameter<float>("max_angular_vel", 1.0f);
-  declare_parameter<float>("controller_timeout", 250.0f);
+  declare_parameter<float>("controller_timeout", 0.25f);
 
   get_parameter("max_linear_vel", max_linear_vel_);
   get_parameter("max_angular_vel", max_angular_vel_);
