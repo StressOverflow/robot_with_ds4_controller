@@ -114,6 +114,8 @@ There is a dead-man button added as a safety feature. The robot will only move w
 
 There is a `timestamp` with the last message received from the controller. If this `timestamp` exceeds a reasonable time, the robot will be stopped until new messages are detected. This could happen when the controller suddenly disconnects from the PC.
 
+**UPDATE**. Now you will be able to change this timeout in the [params file](./config/params.yaml).
+
 ### User feedback
 
 The controller will use some signals to indicate the status of the node.
@@ -151,6 +153,7 @@ controller_node:
   ros__parameters:
     max_linear_vel: 0.5
     max_angular_vel: 1.0
+    controller_timeout: 0.25
 ```
 
 If you need it, you could also change the velocity topic. You will find it on the [launcher](./launch/controller.launch.py).
