@@ -16,6 +16,8 @@
 #define CONTROLLER_CPP__CONTROLLERNODE_HPP_
 
 #include "geometry_msgs/msg/twist.hpp"
+#include "kobuki_ros_interfaces/msg/led.hpp"
+#include "kobuki_ros_interfaces/msg/sound.hpp"
 
 #include "ds4_driver_msgs/msg/status.hpp"
 #include "ds4_driver_msgs/msg/feedback.hpp"
@@ -44,7 +46,8 @@ private:
     CONNECTED,
     IDLE,
     ENABLED,
-    DISABLED
+    DISABLED,
+    ERROR
   };
 
   ControllerState c_state_ = ControllerState::DISCONNECTED;
@@ -60,6 +63,9 @@ private:
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
   rclcpp::Publisher<ds4_driver_msgs::msg::Feedback>::SharedPtr feedback_pub_;
+  rclcpp::Publisher<kobuki_ros_interfaces::msg::Led>::SharedPtr led_pub_1_;
+  rclcpp::Publisher<kobuki_ros_interfaces::msg::Led>::SharedPtr led_pub_2_;
+  rclcpp::Publisher<kobuki_ros_interfaces::msg::Sound>::SharedPtr sound_pub_;
 
   rclcpp::Subscription<ds4_driver_msgs::msg::Status>::SharedPtr controller_sub_;
 
@@ -74,11 +80,22 @@ private:
 
   void send_feedback(ControllerState);
 
-  void controller_connected_feedback();
-  void controller_disconnected_feedback();
-  void controller_idle_feedback();
-  void controller_enabled_feedback();
-  void controller_disabled_feedback();
+  void send_controller_feedback(ControllerState);
+  void send_kobuki_feedback(ControllerState);
+
+  void controller_connected_feedback_c();
+  void controller_disconnected_feedback_c();
+  void controller_idle_feedback_c();
+  void controller_enabled_feedback_c();
+  void controller_disabled_feedback_c();
+  void controller_error_feedback_c();
+
+  void controller_connected_feedback_k();
+  void controller_disconnected_feedback_k();
+  void controller_idle_feedback_k();
+  void controller_enabled_feedback_k();
+  void controller_disabled_feedback_k();
+  void controller_error_feedback_k();
 };
 
 }  // namespace controller_cpp

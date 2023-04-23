@@ -18,6 +18,8 @@
 #include "controller_cpp/ControllerNode.hpp"
 
 #include "geometry_msgs/msg/twist.hpp"
+#include "kobuki_ros_interfaces/msg/led.hpp"
+#include "kobuki_ros_interfaces/msg/sound.hpp"
 
 #include "ds4_driver_msgs/msg/status.hpp"
 #include "ds4_driver_msgs/msg/feedback.hpp"
@@ -50,6 +52,9 @@ ControllerNode::ControllerNode()
 
   vel_pub_ = create_publisher<geometry_msgs::msg::Twist>("output_vel", 10);
   feedback_pub_ = create_publisher<ds4_driver_msgs::msg::Feedback>("controller_feedback", 10);
+  led_pub_1_ = create_publisher<kobuki_ros_interfaces::msg::Led>("kobuki_led_1", 10);
+  led_pub_2_ = create_publisher<kobuki_ros_interfaces::msg::Led>("kobuki_led_2", 10);
+  sound_pub_ = create_publisher<kobuki_ros_interfaces::msg::Sound>("output_sound", 10);
 
   controller_sub_ = create_subscription<ds4_driver_msgs::msg::Status>(
     "controller_status", rclcpp::SensorDataQoS(),
@@ -145,32 +150,72 @@ ControllerNode::value_map(float value, float in_min, float in_max, float out_min
 void
 ControllerNode::send_feedback(ControllerState state)
 {
+  send_controller_feedback(state);
+  send_kobuki_feedback(state);
+
+  c_state_ts_ = now();
+  c_state_ = state;
+  if (state != ControllerState::ERROR) {
+    last_c_state_ = state;
+  }
+}
+
+void
+ControllerNode::send_controller_feedback(ControllerState state)
+{
   switch (state) {
     case ControllerState::DISCONNECTED:
-      controller_disconnected_feedback();
+      controller_disconnected_feedback_c();
       break;
     case ControllerState::CONNECTED:
-      controller_connected_feedback();
+      controller_connected_feedback_c();
       break;
     case ControllerState::IDLE:
-      controller_idle_feedback();
+      controller_idle_feedback_c();
       break;
     case ControllerState::ENABLED:
-      controller_enabled_feedback();
+      controller_enabled_feedback_c();
       break;
     case ControllerState::DISABLED:
-      controller_disabled_feedback();
+      controller_disabled_feedback_c();
+      break;
+    case ControllerState::ERROR:
+      controller_error_feedback_c();
       break;
     default:
       break;
   }
-
-  c_state_ts_ = now();
-  last_c_state_ = state;
 }
 
 void
-ControllerNode::controller_connected_feedback()
+ControllerNode::send_kobuki_feedback(ControllerState state)
+{
+  switch (state) {
+    case ControllerState::DISCONNECTED:
+      controller_connected_feedback_k();
+      break;
+    case ControllerState::CONNECTED:
+      controller_disconnected_feedback_k();
+      break;
+    case ControllerState::IDLE:
+      controller_idle_feedback_k();
+      break;
+    case ControllerState::ENABLED:
+      controller_enabled_feedback_k();
+      break;
+    case ControllerState::DISABLED:
+      controller_disabled_feedback_k();
+      break;
+    case ControllerState::ERROR:
+      controller_error_feedback_k();
+      break;
+    default:
+      break;
+  }
+}
+
+void
+ControllerNode::controller_connected_feedback_c()
 {
   ds4_driver_msgs::msg::Feedback controller_feedback;
 
@@ -193,7 +238,7 @@ ControllerNode::controller_connected_feedback()
 }
 
 void
-ControllerNode::controller_disconnected_feedback()
+ControllerNode::controller_disconnected_feedback_c()
 {
   ds4_driver_msgs::msg::Feedback controller_feedback;
 
@@ -216,7 +261,7 @@ ControllerNode::controller_disconnected_feedback()
 }
 
 void
-ControllerNode::controller_idle_feedback()
+ControllerNode::controller_idle_feedback_c()
 {
   ds4_driver_msgs::msg::Feedback controller_feedback;
 
@@ -239,7 +284,7 @@ ControllerNode::controller_idle_feedback()
 }
 
 void
-ControllerNode::controller_enabled_feedback()
+ControllerNode::controller_enabled_feedback_c()
 {
   ds4_driver_msgs::msg::Feedback controller_feedback;
 
@@ -262,7 +307,7 @@ ControllerNode::controller_enabled_feedback()
 }
 
 void
-ControllerNode::controller_disabled_feedback()
+ControllerNode::controller_disabled_feedback_c()
 {
   ds4_driver_msgs::msg::Feedback controller_feedback;
 
@@ -278,6 +323,143 @@ ControllerNode::controller_disabled_feedback()
   feedback_pub_->publish(controller_feedback);
 
   RCLCPP_INFO(get_logger(), "Controller disabled");
+}
+
+void
+ControllerNode::controller_error_feedback_c()
+{
+  ds4_driver_msgs::msg::Feedback controller_feedback;
+
+  controller_feedback.set_rumble = true;
+  controller_feedback.rumble_big = 1.0f;
+  controller_feedback.rumble_duration = 0.5f;
+
+  controller_feedback.set_led = true;
+  controller_feedback.led_r = 255.0f;
+  controller_feedback.led_g = 0.0f;
+  controller_feedback.led_b = 0.0f;
+
+  controller_feedback.set_led_flash = true;
+  controller_feedback.led_flash_on = 0.25f;
+  controller_feedback.led_flash_off = 0.25f;
+
+  feedback_pub_->publish(controller_feedback);
+
+  RCLCPP_INFO(get_logger(), "Controller error");
+}
+
+void
+ControllerNode::controller_connected_feedback_k()
+{
+  kobuki_ros_interfaces::msg::Led output_led_1;
+  kobuki_ros_interfaces::msg::Led output_led_2;
+
+  kobuki_ros_interfaces::msg::Sound output_sound;
+
+  output_led_1.value = kobuki_ros_interfaces::msg::Led::GREEN;
+  output_led_2.value = kobuki_ros_interfaces::msg::Led::ORANGE;
+
+  output_sound.value = kobuki_ros_interfaces::msg::Sound::ON;
+
+  led_pub_1_->publish(output_led_1);
+  led_pub_2_->publish(output_led_2);
+
+  sound_pub_->publish(output_sound);
+}
+
+void
+ControllerNode::controller_disconnected_feedback_k()
+{
+  kobuki_ros_interfaces::msg::Led output_led_1;
+  kobuki_ros_interfaces::msg::Led output_led_2;
+
+  kobuki_ros_interfaces::msg::Sound output_sound;
+
+  output_led_1.value = kobuki_ros_interfaces::msg::Led::RED;
+  output_led_2.value = kobuki_ros_interfaces::msg::Led::BLACK;
+
+  output_sound.value = kobuki_ros_interfaces::msg::Sound::OFF;
+
+  led_pub_1_->publish(output_led_1);
+  led_pub_2_->publish(output_led_2);
+
+  sound_pub_->publish(output_sound);
+}
+
+void
+ControllerNode::controller_idle_feedback_k()
+{
+  kobuki_ros_interfaces::msg::Led output_led_1;
+  kobuki_ros_interfaces::msg::Led output_led_2;
+
+  kobuki_ros_interfaces::msg::Sound output_sound;
+
+  output_led_1.value = kobuki_ros_interfaces::msg::Led::ORANGE;
+  output_led_2.value = kobuki_ros_interfaces::msg::Led::BLACK;
+
+  output_sound.value = kobuki_ros_interfaces::msg::Sound::RECHARGE;
+
+  led_pub_1_->publish(output_led_1);
+  led_pub_2_->publish(output_led_2);
+
+  sound_pub_->publish(output_sound);
+}
+
+void
+ControllerNode::controller_enabled_feedback_k()
+{
+  kobuki_ros_interfaces::msg::Led output_led_1;
+  kobuki_ros_interfaces::msg::Led output_led_2;
+
+  kobuki_ros_interfaces::msg::Sound output_sound;
+
+  output_led_1.value = kobuki_ros_interfaces::msg::Led::GREEN;
+  output_led_2.value = kobuki_ros_interfaces::msg::Led::GREEN;
+
+  output_sound.value = kobuki_ros_interfaces::msg::Sound::CLEANINGSTART;
+
+  led_pub_1_->publish(output_led_1);
+  led_pub_2_->publish(output_led_2);
+
+  sound_pub_->publish(output_sound);
+}
+
+void
+ControllerNode::controller_disabled_feedback_k()
+{
+  kobuki_ros_interfaces::msg::Led output_led_1;
+  kobuki_ros_interfaces::msg::Led output_led_2;
+
+  kobuki_ros_interfaces::msg::Sound output_sound;
+
+  output_led_1.value = kobuki_ros_interfaces::msg::Led::GREEN;
+  output_led_2.value = kobuki_ros_interfaces::msg::Led::RED;
+
+  output_sound.value = kobuki_ros_interfaces::msg::Sound::CLEANINGEND;
+
+  led_pub_1_->publish(output_led_1);
+  led_pub_2_->publish(output_led_2);
+
+  sound_pub_->publish(output_sound);
+}
+
+void
+ControllerNode::controller_error_feedback_k()
+{
+  kobuki_ros_interfaces::msg::Led output_led_1;
+  kobuki_ros_interfaces::msg::Led output_led_2;
+
+  kobuki_ros_interfaces::msg::Sound output_sound;
+
+  output_led_1.value = kobuki_ros_interfaces::msg::Led::RED;
+  output_led_2.value = kobuki_ros_interfaces::msg::Led::RED;
+
+  output_sound.value = kobuki_ros_interfaces::msg::Sound::ERROR;
+
+  led_pub_1_->publish(output_led_1);
+  led_pub_2_->publish(output_led_2);
+
+  sound_pub_->publish(output_sound);
 }
 
 }  // namespace controller_cpp

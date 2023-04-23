@@ -36,6 +36,9 @@ def generate_launch_description():
                           }, params_file],
                           remappings=[
                             ('output_vel', '/cmd_vel'),
+                            ('kobuki_led_1', '/commands/led1'),
+                            ('kobuki_led_2', '/commands/led2'),
+                            ('output_sound', '/commands/sound'),
                             ('controller_status', '/status'),
                             ('controller_feedback', '/set_feedback'),
                           ])
