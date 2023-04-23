@@ -77,7 +77,7 @@ ControllerNode::control_cycle()
   ds4_driver_msgs::msg::Feedback controller_feedback;
 
   controller_connected_ = now() - controller_ts_ < 50ms;
-  controller_enabled_ = last_controller_status_->button_cross;
+  controller_enabled_ = controller_connected_ && last_controller_status_->button_cross;
 
   if (last_controller_connected_ != controller_connected_) {
     if (controller_connected_) {
@@ -174,9 +174,6 @@ ControllerNode::controller_disconnected_feedback()
   controller_feedback.set_led_flash = true;
   controller_feedback.led_flash_on = 0.0f;
   controller_feedback.led_flash_off = 0.0f;
-
-  controller_enabled_ = false;
-  last_controller_enabled_ = false;
 
   feedback_pub_->publish(controller_feedback);
   RCLCPP_INFO(get_logger(), "Controller disconnected");
