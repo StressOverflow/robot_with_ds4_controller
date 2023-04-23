@@ -102,7 +102,7 @@ a micro USB cable.
   
 When the controller is paired, the launcher will show it, then you can start to use it.
 
-### Controls
+### Controls 🕹️
 
 There is a dead-man button added as a safety feature. The robot will only move while said button is pressed.
 
@@ -113,6 +113,30 @@ There is a dead-man button added as a safety feature. The robot will only move w
 - Turn: **Left joystick**
 
 There is a `timestamp` with the last message received from the controller. If this `timestamp` exceeds a reasonable time, the robot will be stopped until new messages are detected. This could happen when the controller suddenly disconnects from the PC.
+
+### User feedback
+
+The controller will use some signals to indicate the status of the node.
+
+#### Controller connected.
+
+The controller will softly rumble for `1s`. Also, the LED bar will iluminate in steady blue light. 🔵
+
+![blue](./doc/img/blue.gif)
+
+#### Controller enabled.
+
+The controller will hardly rumble for `25ms`. Also, the LED bar will iluminate in steady green light. 🟢
+
+> This is the only mode where the robot will actually mode! Is activated by **HOLDING** the dead-man button.
+
+![green](./doc/img/green.gif)
+
+#### Controller disabled.
+
+The controller will iluminate it's LED bar with slowly blinking yellow light. 🟡
+
+![blinking_yellow](./doc/img/blinking_yellow.gif)
 
 ### Params
 
@@ -127,6 +151,22 @@ controller_node:
     max_angular_vel: 1.0
 ```
 
+If you need it, you could also change the velocity topic. You will find it on the [launcher](./launch/controller.launch.py).
+
+```yaml
+controller_cmd = Node(package='map_with_controller',
+                          executable='controller',
+                          output='screen',
+                          parameters=[{
+                            'use_sim_time': False
+                          }, params_file],
+                          remappings=[
+                            ('output_vel', '/cmd_vel'), # HERE!
+                            ('controller_status', '/status'),
+                            ('controller_feedback', '/set_feedback'),
+                          ])
+```
+
 ## Features
 
 https://github.com/naoki-mizuno/ds4_driver.git
@@ -134,6 +174,10 @@ https://github.com/naoki-mizuno/ds4_driver.git
 https://github.com/naoki-mizuno/ds4drv.git
 
 https://github.com/chrippa/ds4drv.git
+
+## Importat notes
+
+- **This package was only tested with an original DS4 Controller via USB. Bluetooth was not tested. DS4 Compatible Controllers were not tested either.**
 
 ## Future improvements ✔️
 
