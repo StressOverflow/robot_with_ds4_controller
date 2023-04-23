@@ -70,7 +70,7 @@ requests have not yet been merged upstream. Until they are merged, use
 (`devel` branch).
 
 ```bash
-cd ThirdParty//ds4drv
+cd ThirdParty/ds4drv
 mkdir -p ~/.local/lib/python3.10/site-packages
 python3 setup.py install --prefix ~/.local
 sudo cp udev/50-ds4drv.rules /etc/udev/rules.d/
@@ -87,7 +87,7 @@ ros2 launch map_with_controller controller.launch.py
 
 ```
 
-### Using
+### Using 💭
 
 ds4drv has two different modes to find DS4 devices, decide which one to use
 depending on your use case. Raw bluetooth mode and hidraw mode. The fisrt one 
@@ -122,13 +122,15 @@ The controller will use some signals to indicate the status of the node.
 
 The controller will softly rumble for `1s`. Also, the LED bar will iluminate in steady blue light. 🔵
 
+> This state will not change until the first press of the *dead-man* button.
+
 ![blue](./doc/img/blue.gif)
 
 #### Controller enabled.
 
 The controller will hardly rumble for `25ms`. Also, the LED bar will iluminate in steady green light. 🟢
 
-> This is the only mode where the robot will actually move! Is activated by **HOLDING** the dead-man button.
+> This is the only mode where the robot will actually move! Is activated by **HOLDING** the *dead-man* button.
 
 ![green](./doc/img/green.gif)
 
@@ -174,6 +176,24 @@ https://github.com/naoki-mizuno/ds4_driver.git
 https://github.com/naoki-mizuno/ds4drv.git
 
 https://github.com/chrippa/ds4drv.git
+
+## Tests 🧾
+
+This package was tested on the following scenarios:
+
+### Original DS4 Controller
+
+|         |   Kobuki   |   Tiago   |
+|:-------:|:---------:|:---------:|
+| Real World 🌍 |     ✔️     |      〰️     |
+| Simulation 🖥️ |     ✔️     |      ✔️     |
+
+
+https://user-images.githubusercontent.com/92941081/233832351-5fe179eb-ce52-4793-bb3d-00435851b09b.mp4
+
+
+https://user-images.githubusercontent.com/92941081/233832354-9eb7d7fc-cf8a-46e5-88b8-9888fea8fedc.mp4
+
 
 ## Importat notes
 
