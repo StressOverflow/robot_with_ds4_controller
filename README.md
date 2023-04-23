@@ -204,7 +204,7 @@ https://user-images.githubusercontent.com/92941081/233832354-9eb7d7fc-cf8a-46e5-
 - [x] Parameters. The maximum speed of the robot in each of the maneuvers should be modifiable without the need to recompile the code. Other types of parameters of interest would also be added if needed.
 - [x] "Dead-man" button. The controller should only work if one of the buttons is held down, as a safety feature.
 - [x] Feedback. The controller should notify the user when it is ready to operate the robot, either with lights or vibration, as well as the output of the terminal.
-- [ ] Kobuki dedicated branch. Although the package is designed for any robot, a specific branch for the Kobuki TurtleBot would allow it to use its resources, such as the speaker or the LEDs, to emit signals and feedback to the user.
+- [x] Kobuki dedicated branch. Although the package is designed for any robot, a specific branch for the Kobuki TurtleBot would allow it to use its resources, such as the speaker or the LEDs, to emit signals and feedback to the user.
 
 ## About
 

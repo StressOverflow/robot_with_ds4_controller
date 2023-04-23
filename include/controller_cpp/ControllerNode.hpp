@@ -18,6 +18,10 @@
 
 #include "geometry_msgs/msg/twist.hpp"
 
+#include "kobuki_ros_interfaces/msg/bumper_event.hpp"
+#include "kobuki_ros_interfaces/msg/led.hpp"
+#include "kobuki_ros_interfaces/msg/sound.hpp"
+
 #include "ds4_driver_msgs/msg/status.hpp"
 #include "ds4_driver_msgs/msg/feedback.hpp"
 
@@ -41,20 +45,26 @@ private:
 
   float max_linear_vel_;
   float max_angular_vel_;
+  float controller_timeout_;
 
   static constexpr float ABS_MAX_LINEAR_VEL_ = 1.0f;
   static constexpr float ABS_MAX_ANGULAR_VEL_ = 1.5f;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
   rclcpp::Publisher<ds4_driver_msgs::msg::Feedback>::SharedPtr feedback_pub_;
+  rclcpp::Publisher<kobuki_ros_interfaces::msg::Led>::SharedPtr led_1_pub_;
+  rclcpp::Publisher<kobuki_ros_interfaces::msg::Led>::SharedPtr led_2_pub_;
+  rclcpp::Publisher<kobuki_ros_interfaces::msg::Sound>::SharedPtr sound_pub_;
+
   rclcpp::Subscription<ds4_driver_msgs::msg::Status>::SharedPtr controller_sub_;
+  rclcpp::Subscription<kobuki_ros_interfaces::msg::BumperEvent>::SharedPtr bumper_sub_;
 
   rclcpp::TimerBase::SharedPtr timer_;
-  rclcpp::Time controller_ts_;
 
   ds4_driver_msgs::msg::Status::UniquePtr last_controller_status_;
 
   void controller_callback(ds4_driver_msgs::msg::Status::UniquePtr msg);
+  void bumper_callback(kobuki_ros_interfaces::msg::BumperEvent::UniquePtr msg);
   void control_cycle();
 
   float value_map(float value, float in_min, float in_max, float out_min, float out_max);

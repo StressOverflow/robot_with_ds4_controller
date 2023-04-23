@@ -16,6 +16,7 @@
 #
 # max_linear_vel: Max linear velocity of the robot
 # max_angular_vel: Max angular velocity of the robot
+# controller_timeout: Timeout in seconds for the controller
 # 
 # Notes:
 # 
@@ -27,3 +28,4 @@ controller_node:
   ros__parameters:
     max_linear_vel: 0.5
     max_angular_vel: 1.0
+    controller_timeout: 0.25

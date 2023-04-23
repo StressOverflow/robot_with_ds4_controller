@@ -32,19 +32,23 @@ def generate_launch_description():
                           executable='controller',
                           output='screen',
                           parameters=[{
-                            'use_sim_time': False
+                            'use_sim_time': True
                           }, params_file],
                           remappings=[
                             ('output_vel', '/cmd_vel'),
                             ('controller_status', '/status'),
                             ('controller_feedback', '/set_feedback'),
+                            ('kobuki_led_1', '/commands/led1'),
+                            ('kobuki_led_2', '/commands/led2'),
+                            ('output_sound', '/commands/sound'),
+                            ('input_bumper', '/events/bumper'),
                           ])
 
     ds4_driver = Node(package='ds4_driver',
                       executable='ds4_driver_node.py',
                       output='screen',
                       parameters=[{
-                          'use_sim_time': False
+                          'use_sim_time': True
                       }])
 
     ld = LaunchDescription()
