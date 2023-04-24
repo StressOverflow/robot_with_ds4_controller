@@ -140,9 +140,9 @@ The controller will hardly rumble for `25ms`. Also, the LED bar will iluminate i
 
 #### Controller disabled.
 
-The controller will iluminate it's LED bar with slowly blinking yellow light. 🟡
+The controller will hardly rumble for `50ms`. Also, the LED bar will iluminate in slowly blinking yellow light. 🟡
 
-> After `60s` in this state, the controller will change to `IDLE` mode. The light will became steady dim blue 🔵.
+> After a while in this state, the controller will change to `IDLE` mode. The light will became steady dim blue 🔵.
 
 ![blinking_yellow](./doc/img/blinking_yellow.gif)
 
@@ -239,6 +239,7 @@ https://user-images.githubusercontent.com/92941081/233832354-9eb7d7fc-cf8a-46e5-
 ## Importat notes
 
 - **This package was only tested with an original DS4 Controller via USB. Bluetooth was not tested. DS4 Compatible Controllers were not tested either.**
+- The controller rumble function temporary fails if multiple events try to activate it in a short period of time.
 
 ## Future improvements ✔️
 
