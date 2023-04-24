@@ -15,6 +15,11 @@
 #ifndef CONTROLLER_CPP__CONTROLLERNODE_HPP_
 #define CONTROLLER_CPP__CONTROLLERNODE_HPP_
 
+#include <chrono>
+#include <map>
+#include <memory>
+#include <string>
+
 #include "geometry_msgs/msg/twist.hpp"
 #include "kobuki_ros_interfaces/msg/led.hpp"
 #include "kobuki_ros_interfaces/msg/sound.hpp"
@@ -109,20 +114,28 @@ private:
   void control_cycle();
 
   std::map<uint8_t, uint8_t> bumper_map_ = {
-    {kobuki_ros_interfaces::msg::BumperEvent::LEFT, kobuki_ros_interfaces::msg::BumperEvent::RELEASED},
-    {kobuki_ros_interfaces::msg::BumperEvent::CENTER, kobuki_ros_interfaces::msg::BumperEvent::RELEASED},
-    {kobuki_ros_interfaces::msg::BumperEvent::RIGHT, kobuki_ros_interfaces::msg::BumperEvent::RELEASED}
+    {kobuki_ros_interfaces::msg::BumperEvent::LEFT,
+      kobuki_ros_interfaces::msg::BumperEvent::RELEASED},
+    {kobuki_ros_interfaces::msg::BumperEvent::CENTER,
+      kobuki_ros_interfaces::msg::BumperEvent::RELEASED},
+    {kobuki_ros_interfaces::msg::BumperEvent::RIGHT,
+      kobuki_ros_interfaces::msg::BumperEvent::RELEASED}
   };
 
   std::map<uint8_t, uint8_t> wheel_drop_map_ = {
-    {kobuki_ros_interfaces::msg::WheelDropEvent::LEFT, kobuki_ros_interfaces::msg::WheelDropEvent::RAISED},
-    {kobuki_ros_interfaces::msg::WheelDropEvent::RIGHT, kobuki_ros_interfaces::msg::WheelDropEvent::RAISED}
+    {kobuki_ros_interfaces::msg::WheelDropEvent::LEFT,
+      kobuki_ros_interfaces::msg::WheelDropEvent::RAISED},
+    {kobuki_ros_interfaces::msg::WheelDropEvent::RIGHT,
+      kobuki_ros_interfaces::msg::WheelDropEvent::RAISED}
   };
 
   std::map<uint8_t, uint8_t> cliff_map_ = {
-    {kobuki_ros_interfaces::msg::CliffEvent::LEFT, kobuki_ros_interfaces::msg::CliffEvent::FLOOR},
-    {kobuki_ros_interfaces::msg::CliffEvent::CENTER, kobuki_ros_interfaces::msg::CliffEvent::FLOOR},
-    {kobuki_ros_interfaces::msg::CliffEvent::RIGHT, kobuki_ros_interfaces::msg::CliffEvent::FLOOR}
+    {kobuki_ros_interfaces::msg::CliffEvent::LEFT,
+      kobuki_ros_interfaces::msg::CliffEvent::FLOOR},
+    {kobuki_ros_interfaces::msg::CliffEvent::CENTER,
+      kobuki_ros_interfaces::msg::CliffEvent::FLOOR},
+    {kobuki_ros_interfaces::msg::CliffEvent::RIGHT,
+      kobuki_ros_interfaces::msg::CliffEvent::FLOOR}
   };
 
   void stop_robot();

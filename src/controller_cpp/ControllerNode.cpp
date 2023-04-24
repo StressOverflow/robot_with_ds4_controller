@@ -77,7 +77,7 @@ ControllerNode::ControllerNode()
   wheel_drop_sub_ = create_subscription<kobuki_ros_interfaces::msg::WheelDropEvent>(
     "input_wheel_drop", rclcpp::SensorDataQoS(),
     std::bind(&ControllerNode::wheel_drop_callback, this, _1));
-  
+
   cliff_sub_ = create_subscription<kobuki_ros_interfaces::msg::CliffEvent>(
     "input_cliff", rclcpp::SensorDataQoS(),
     std::bind(&ControllerNode::cliff_callback, this, _1));
@@ -142,21 +142,21 @@ ControllerNode::set_emergency_stop(EmergencyStop stop)
 void
 ControllerNode::check_for_emergency_stop()
 {
-  for (const auto& [key, value] : bumper_map_) {
+  for (const auto & [key, value] : bumper_map_) {
     if (value == kobuki_ros_interfaces::msg::BumperEvent::PRESSED) {
       set_emergency_stop(EmergencyStop::BUMPER);
       break;
     }
   }
 
-  for (const auto& [key, value] : wheel_drop_map_) {
+  for (const auto & [key, value] : wheel_drop_map_) {
     if (value == kobuki_ros_interfaces::msg::WheelDropEvent::DROPPED) {
       set_emergency_stop(EmergencyStop::WHEEL_DROP);
       break;
     }
   }
 
-  for (const auto& [key, value] : cliff_map_) {
+  for (const auto & [key, value] : cliff_map_) {
     if (value == kobuki_ros_interfaces::msg::CliffEvent::CLIFF) {
       set_emergency_stop(EmergencyStop::CLIFF);
       break;
@@ -223,8 +223,7 @@ ControllerNode::control_cycle()
     check_for_emergency_stop();
   }
 
-  switch (c_state_)
-  {
+  switch (c_state_) {
     case ControllerState::CONNECTED:
       if (!controller_connected) {
         set_controller_state(ControllerState::DISCONNECTED);
@@ -298,8 +297,7 @@ ControllerNode::control_cycle()
         set_controller_state(prev_c_state_);
       }
 
-      switch (e_stop_)
-      {
+      switch (e_stop_) {
         case EmergencyStop::BUMPER:
         case EmergencyStop::CLIFF:
         case EmergencyStop::WHEEL_DROP:

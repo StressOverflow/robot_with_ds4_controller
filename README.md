@@ -46,7 +46,7 @@ but you may want to use your distro's packages if available:
 
 Installing the latest release is simple by using [pip](http://www.pip-installer.org/):
 
-``` bash
+```bash
 sudo pip install ds4drv
 ```
 Once we have everything installed, clone this repo to your `src` path, like so:
@@ -148,11 +148,19 @@ The controller will iluminate it's LED bar with slowly blinking yellow light. ðŸ
 
 #### Controller error
 
-The controller might enter to this state from several events, like bump into something, reaching a cliff or being lifted from the ground.
+The controller might enter to this state from several events triggered by the Kobuki, like bumping into something, reaching a cliff or being lifted from the ground.
 
 The controller will iluminate it's LED bar with fast blinking red light. ðŸ”´
 
 > You will see in the terminal more detailed instructions about how to exit from this state.
+
+  ```console
+  [controller-1] [WARN] [1682360892.578366918] [controller_node]: [EMERGENCY STOP] Release both triggers to clear.
+  ```
+
+  ```console
+  [controller-1] [WARN] [1682360892.578366918] [controller_node]: [EMERGENCY STOP] Move the robot to a safe position and press L1 + R1 to clear.
+  ```
 
 ![blinking_red](./doc/img/blinking_red.gif)
 
