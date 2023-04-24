@@ -116,6 +116,8 @@ There is a `timestamp` with the last message received from the controller. If th
 
 **UPDATE**. Now you will be able to change this timeout in the [params file](./config/params.yaml).
 
+> Be **SPECIALLY CAREFUL** with this parameter, since it is the only number between you and a runaway robot. If the controller is disconnected, the robot will continue to move with the last speed commanded. You have been warned!
+
 ### User feedback
 
 The controller will use some signals to indicate the status of the node.
@@ -161,7 +163,7 @@ There are two progammable LEDs onboard, which are used to display the node statu
 - **LED 1** is used for the controller itself.
 - **LED 2** is used for the *permissions* of the controller.
 
-|         |   LED Status   |   LED 1   |   LED 2   |
+|         |   LED S   |   LED 1   |   LED 2   |
 |:-------:|:---------:|:---------:|:---------:|
 | `ControllerState::CONNECTED` |     🟢     |      🟢     |      ⚫     |
 | `ControllerState::DISCONNECTED` |     🟢     |      🔴     |      ⚫     |
@@ -173,6 +175,7 @@ There are two progammable LEDs onboard, which are used to display the node statu
 - `ControllerState::CONNECTED`: The controller is connected to the node.
 - `ControllerState::DISCONNECTED`: The controller is disconnected from the node.
 - `ControllerState::IDLE`: The controller is connected, but has not been touch for a while.
+  > This state is only reachable from `ControllerState::CONNECTED` or `ControllerState::DISABLED`.
 - `ControllerState::ENABLED`: The controller is connected, and it is allowed to command the robot.
 - `ControllerState::DISABLED`: The controller is connected, and it is **not** allowed to command the robot.
 - `ControllerState::ERROR`: The controller is conneccted, but it is some error or emergency which prevents the robot to move.
@@ -187,6 +190,8 @@ In [params.yaml](./config/params.yaml) you will be able to modify the maximum ve
 
 **However, as a security feature, it will be clamped by a maximum absolute velocity which is hardcoded.**
 
+> **Friendly reminder** The average walking speed for a human is around 1-1.5 m/s. Remember that you are a human wired to a robot which uses your laptop as a hat.
+
 ```yaml
 controller_node:
   ros__parameters:
@@ -195,22 +200,6 @@ controller_node:
     controller_timeout: 0.25
     enable_leds: true
     enable_sounds: true
-```
-
-If you need it, you could also change the velocity topic. You will find it on the [launcher](./launch/controller.launch.py).
-
-```yaml
-controller_cmd = Node(package='map_with_controller',
-                          executable='controller',
-                          output='screen',
-                          parameters=[{
-                            'use_sim_time': False
-                          }, params_file],
-                          remappings=[
-                            ('output_vel', '/cmd_vel'), # HERE!
-                            ('controller_status', '/status'),
-                            ('controller_feedback', '/set_feedback'),
-                          ])
 ```
 
 ## Features
