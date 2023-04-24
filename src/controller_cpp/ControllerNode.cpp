@@ -579,7 +579,7 @@ ControllerNode::controller_connected_feedback_k()
   kobuki_ros_interfaces::msg::Sound output_sound;
 
   output_led_1.value = kobuki_ros_interfaces::msg::Led::GREEN;
-  output_led_2.value = kobuki_ros_interfaces::msg::Led::ORANGE;
+  output_led_2.value = kobuki_ros_interfaces::msg::Led::BLACK;
 
   output_sound.value = kobuki_ros_interfaces::msg::Sound::CLEANINGEND;
 

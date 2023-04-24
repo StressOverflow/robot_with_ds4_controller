@@ -3,7 +3,7 @@
 [![distro](https://img.shields.io/badge/Ubuntu%2022-Jammy%20Jellyfish-violet)](https://releases.ubuntu.com/22.04/)
 [![distro](https://img.shields.io/badge/ROS2-Humble-blue)](https://docs.ros.org/en/humble/index.html)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)](https://isocpp.org/)
-[![main](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml/badge.svg?branch=main)](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml)
+[![main](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml/badge.svg?branch=kobuki-main)](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml)
 
 ## Motivation 💡
 
@@ -107,7 +107,7 @@ When the controller is paired, the launcher will show it, then you can start to 
 There is a dead-man button added as a safety feature. The robot will only move while said button is pressed.
 
 - dead-man button: **X**
-
+- Clear emergencies: **L1** + **R1**
 - Move forward: **R2**
 - Move backward: **L2**
 - Turn: **Left joystick**
@@ -144,6 +144,43 @@ The controller will iluminate it's LED bar with slowly blinking yellow light. �
 
 ![blinking_yellow](./doc/img/blinking_yellow.gif)
 
+#### Controller error
+
+The controller might enter to this state from several events, like bump into something, reaching a cliff or being lifted from the ground.
+
+The controller will iluminate it's LED bar with fast blinking red light. 🔴
+
+> You will see in the terminal more detailed instructions about how to exit from this state.
+
+![blinking_red](./doc/img/blinking_red.gif)
+
+### Kobuki LEDs
+
+There are two progammable LEDs onboard, which are used to display the node status.
+
+- **LED 1** is used for the controller itself.
+- **LED 2** is used for the *permissions* of the controller.
+
+|         |   LED Status   |   LED 1   |   LED 2   |
+|:-------:|:---------:|:---------:|:---------:|
+| `ControllerState::CONNECTED` |     🟢     |      🟢     |      ⚫     |
+| `ControllerState::DISCONNECTED` |     🟢     |      🔴     |      ⚫     |
+| `ControllerState::IDLE` |     🟢     |      🟡     |      ⚫     |
+| `ControllerState::ENABLED` |     🟢     |      🟢     |      🟢      |
+| `ControllerState::DISABLED` |     🟢     |      🟢     |      🟡      |
+| `ControllerState::ERROR` |     🟢     |      🟢     |      🔴     |
+
+- `ControllerState::CONNECTED`: The controller is connected to the node.
+- `ControllerState::DISCONNECTED`: The controller is disconnected from the node.
+- `ControllerState::IDLE`: The controller is connected, but has not been touch for a while.
+- `ControllerState::ENABLED`: The controller is connected, and it is allowed to command the robot.
+- `ControllerState::DISABLED`: The controller is connected, and it is **not** allowed to command the robot.
+- `ControllerState::ERROR`: The controller is conneccted, but it is some error or emergency which prevents the robot to move.
+
+Along with the LED's, for each state is also associated a sound.
+
+> You can disable either the LED's or the Sound through the [params file](./config/params.yaml).
+
 ### Params
 
 In [params.yaml](./config/params.yaml) you will be able to modify the maximum velocity of the robot.
@@ -156,6 +193,8 @@ controller_node:
     max_linear_vel: 0.5
     max_angular_vel: 1.0
     controller_timeout: 0.25
+    enable_leds: true
+    enable_sounds: true
 ```
 
 If you need it, you could also change the velocity topic. You will find it on the [launcher](./launch/controller.launch.py).

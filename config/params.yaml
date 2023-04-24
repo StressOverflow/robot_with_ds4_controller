@@ -17,6 +17,8 @@
 # max_linear_vel: Max linear velocity of the robot
 # max_angular_vel: Max angular velocity of the robot
 # controller_timeout: Timeout in seconds for the controller
+# enable_leds: Enable/disable the LEDs
+# enable_sounds: Enable/disable the sounds
 # 
 # Notes:
 # 
