@@ -29,5 +29,3 @@ controller_node:
     max_linear_vel: 0.5
     max_angular_vel: 1.0
     controller_timeout: 0.25
-    enable_leds: true
-    enable_sounds: true

@@ -15,12 +15,11 @@
 #ifndef CONTROLLER_CPP__CONTROLLERNODE_HPP_
 #define CONTROLLER_CPP__CONTROLLERNODE_HPP_
 
+#include <chrono>
+#include <memory>
+#include <string>
+
 #include "geometry_msgs/msg/twist.hpp"
-#include "kobuki_ros_interfaces/msg/led.hpp"
-#include "kobuki_ros_interfaces/msg/sound.hpp"
-#include "kobuki_ros_interfaces/msg/bumper_event.hpp"
-#include "kobuki_ros_interfaces/msg/wheel_drop_event.hpp"
-#include "kobuki_ros_interfaces/msg/cliff_event.hpp"
 
 #include "ds4_driver_msgs/msg/status.hpp"
 #include "ds4_driver_msgs/msg/feedback.hpp"
@@ -59,10 +58,7 @@ private:
   enum class EmergencyStop
   {
     NONE,
-    BOTH_TRIGGERS,
-    BUMPER,
-    WHEEL_DROP,
-    CLIFF
+    BOTH_TRIGGERS
   };
 
   EmergencyStop e_stop_ = EmergencyStop::NONE;
@@ -81,49 +77,20 @@ private:
   float max_angular_vel_;
   float controller_timeout_;
 
-  bool enable_leds_;
-  bool enable_sounds_;
-
   static constexpr float ABS_MAX_LINEAR_VEL_ = 1.0f;
   static constexpr float ABS_MAX_ANGULAR_VEL_ = 1.5f;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
   rclcpp::Publisher<ds4_driver_msgs::msg::Feedback>::SharedPtr feedback_pub_;
-  rclcpp::Publisher<kobuki_ros_interfaces::msg::Led>::SharedPtr led_pub_1_;
-  rclcpp::Publisher<kobuki_ros_interfaces::msg::Led>::SharedPtr led_pub_2_;
-  rclcpp::Publisher<kobuki_ros_interfaces::msg::Sound>::SharedPtr sound_pub_;
 
   rclcpp::Subscription<ds4_driver_msgs::msg::Status>::SharedPtr controller_sub_;
-  rclcpp::Subscription<kobuki_ros_interfaces::msg::BumperEvent>::SharedPtr bumper_sub_;
-  rclcpp::Subscription<kobuki_ros_interfaces::msg::WheelDropEvent>::SharedPtr wheel_drop_sub_;
-  rclcpp::Subscription<kobuki_ros_interfaces::msg::CliffEvent>::SharedPtr cliff_sub_;
 
   rclcpp::TimerBase::SharedPtr timer_;
 
   ds4_driver_msgs::msg::Status::UniquePtr last_controller_status_;
 
   void controller_callback(ds4_driver_msgs::msg::Status::UniquePtr msg);
-  void bumper_callback(kobuki_ros_interfaces::msg::BumperEvent::UniquePtr msg);
-  void wheel_drop_callback(kobuki_ros_interfaces::msg::WheelDropEvent::UniquePtr msg);
-  void cliff_callback(kobuki_ros_interfaces::msg::CliffEvent::UniquePtr msg);
   void control_cycle();
-
-  std::map<uint8_t, uint8_t> bumper_map_ = {
-    {kobuki_ros_interfaces::msg::BumperEvent::LEFT, kobuki_ros_interfaces::msg::BumperEvent::RELEASED},
-    {kobuki_ros_interfaces::msg::BumperEvent::CENTER, kobuki_ros_interfaces::msg::BumperEvent::RELEASED},
-    {kobuki_ros_interfaces::msg::BumperEvent::RIGHT, kobuki_ros_interfaces::msg::BumperEvent::RELEASED}
-  };
-
-  std::map<uint8_t, uint8_t> wheel_drop_map_ = {
-    {kobuki_ros_interfaces::msg::WheelDropEvent::LEFT, kobuki_ros_interfaces::msg::WheelDropEvent::RAISED},
-    {kobuki_ros_interfaces::msg::WheelDropEvent::RIGHT, kobuki_ros_interfaces::msg::WheelDropEvent::RAISED}
-  };
-
-  std::map<uint8_t, uint8_t> cliff_map_ = {
-    {kobuki_ros_interfaces::msg::CliffEvent::LEFT, kobuki_ros_interfaces::msg::CliffEvent::FLOOR},
-    {kobuki_ros_interfaces::msg::CliffEvent::CENTER, kobuki_ros_interfaces::msg::CliffEvent::FLOOR},
-    {kobuki_ros_interfaces::msg::CliffEvent::RIGHT, kobuki_ros_interfaces::msg::CliffEvent::FLOOR}
-  };
 
   void stop_robot();
   void drive_robot(float, float, float);
@@ -134,7 +101,6 @@ private:
   void clean_controller_feedback();
 
   void send_controller_feedback(ControllerState);
-  void send_kobuki_feedback(ControllerState);
 
   void controller_connected_feedback_c();
   void controller_disconnected_feedback_c();
@@ -142,13 +108,6 @@ private:
   void controller_enabled_feedback_c();
   void controller_disabled_feedback_c();
   void controller_error_feedback_c();
-
-  void controller_connected_feedback_k();
-  void controller_disconnected_feedback_k();
-  void controller_idle_feedback_k();
-  void controller_enabled_feedback_k();
-  void controller_disabled_feedback_k();
-  void controller_error_feedback_k();
 };
 
 }  // namespace controller_cpp
