@@ -3,7 +3,7 @@
 [![distro](https://img.shields.io/badge/Ubuntu%2022-Jammy%20Jellyfish-violet)](https://releases.ubuntu.com/22.04/)
 [![distro](https://img.shields.io/badge/ROS2-Humble-blue)](https://docs.ros.org/en/humble/index.html)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)](https://isocpp.org/)
-[![main](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml/badge.svg?branch=kobuki-main)](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml)ç
+[![main](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml/badge.svg?branch=kobuki-main)](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/kobuki-base/kobuki_core/devel/resources/kobuki.png" />
