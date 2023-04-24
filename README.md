@@ -3,7 +3,7 @@
 [![distro](https://img.shields.io/badge/Ubuntu%2022-Jammy%20Jellyfish-violet)](https://releases.ubuntu.com/22.04/)
 [![distro](https://img.shields.io/badge/ROS2-Humble-blue)](https://docs.ros.org/en/humble/index.html)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B-orange)](https://isocpp.org/)
-[![main](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml/badge.svg?branch=main)](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml)
+[![main](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml/badge.svg?branch=kobuki-main)](https://github.com/dgarcu/mapwithcontroller/actions/workflows/colcon_tests.yaml)
 
 ## Motivation 💡
 
@@ -23,10 +23,7 @@ https://user-images.githubusercontent.com/92941081/233775494-aa1f4994-df3c-4415-
 **[22.04 Jammy Jellyfish 🪼](https://releases.ubuntu.com/22.04/)** version. You might be already familiar with it, however 
 [here](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview) you have a step-by-step tutorial on how to install it on your machine.
 
-2. [ROS](https://www.ros.org/). ROS stands for *Robot Operating System*, and it is the **middleware** that the vast majority of robots out there use 
-nowadays, and so are we! We are focusing on the latest stable release, which is **[ROS 2 Humble Hawksbill 🐢](https://docs.ros.org/en/humble/index.html)**. 
-From there you can navigate through all the documentation, but [here](https://docs.ros.org/en/humble/Installation.html) is a shorcut to the installation
-page.
+2. [ROS](https://www.ros.org/). ROS stands for *Robot Operating System*, and it is the **middleware** that the vast majority of robots out there use nowadays, and so are we! We are focusing on the latest stable release, which is **[ROS 2 Humble Hawksbill 🐢](https://docs.ros.org/en/humble/index.html)**. From there you can navigate through all the documentation, but [here](https://docs.ros.org/en/humble/Installation.html) is a shorcut to the installation page.
 
 ### Dependencies
 
@@ -41,14 +38,14 @@ but you may want to use your distro's packages if available:
 - [pyudev](http://pyudev.readthedocs.org/) 0.16 or higher
 - [python-evdev](http://pythonhosted.org/evdev/) 0.3.0 or higher
 
-
 ### Stable release
 
 Installing the latest release is simple by using [pip](http://www.pip-installer.org/):
 
-``` bash
+```bash
 sudo pip install ds4drv
 ```
+
 Once we have everything installed, clone this repo to your `src` path, like so:
 
 ```bash
@@ -62,7 +59,7 @@ Once finished, you need to import the  **third party** repos that we will need. 
 vcs import --recursive < mapwithcontroller/thirdparty.repos
 ```
 
-### Installation 
+### Installation
 
 This driver depends on `ds4drv`. Some features of this driver depend on pull
 requests have not yet been merged upstream. Until they are merged, use
@@ -107,7 +104,7 @@ When the controller is paired, the launcher will show it, then you can start to 
 There is a dead-man button added as a safety feature. The robot will only move while said button is pressed.
 
 - dead-man button: **X**
-
+- Clear emergencies: **L1** + **R1**
 - Move forward: **R2**
 - Move backward: **L2**
 - Turn: **Left joystick**
@@ -116,11 +113,13 @@ There is a `timestamp` with the last message received from the controller. If th
 
 **UPDATE**. Now you will be able to change this timeout in the [params file](./config/params.yaml).
 
+> Be **SPECIALLY CAREFUL** with this parameter, since it is the only number between you and a runaway robot. If the controller is disconnected, the robot will continue to move with the last speed commanded. You have been warned!
+
 ### User feedback
 
 The controller will use some signals to indicate the status of the node.
 
-#### Controller connected.
+#### Controller connected
 
 The controller will softly rumble for `1s`. Also, the LED bar will iluminate in steady blue light. 🔵
 
@@ -128,27 +127,41 @@ The controller will softly rumble for `1s`. Also, the LED bar will iluminate in 
 
 ![blue](./doc/img/blue.gif)
 
-#### Controller enabled.
+#### Controller enabled
 
-The controller will hardly rumble for `25ms`. Also, the LED bar will iluminate in steady green light. 🟢
+The controller will hardly rumble for `250ms`. Also, the LED bar will iluminate in steady green light. 🟢
 
 > This is the only mode where the robot will actually move! Is activated by **HOLDING** the *dead-man* button.
 
 ![green](./doc/img/green.gif)
 
-#### Controller disabled.
+#### Controller disabled
 
-The controller will iluminate it's LED bar with slowly blinking yellow light. 🟡
+The controller will hardly rumble for `500ms`. Also, the LED bar will iluminate in slowly blinking yellow light. 🟡
 
-> After `60s` in this state, the controller will change to `IDLE` mode. The light will became steady dim blue 🔵.
+> After a while in this state, the controller will change to `IDLE` mode. The light will became steady dim blue 🔵.
 
 ![blinking_yellow](./doc/img/blinking_yellow.gif)
+
+#### Controller error
+
+The controller will iluminate it's LED bar with fast blinking red light. 🔴
+
+> You will see in the terminal more detailed instructions about how to exit from this state.
+
+  ```console
+  [controller-1] [WARN] [1682360892.578366918] [controller_node]: [EMERGENCY STOP] Release both triggers to clear.
+  ```
+
+![blinking_red](./doc/img/blinking_red.gif)
 
 ### Params
 
 In [params.yaml](./config/params.yaml) you will be able to modify the maximum velocity of the robot.
 
 **However, as a security feature, it will be clamped by a maximum absolute velocity which is hardcoded.**
+
+> **Friendly reminder** The average walking speed for a human is around 1-1.5 m/s. Remember that you are a human wired to a robot which uses your laptop as a hat.
 
 ```yaml
 controller_node:
@@ -203,6 +216,7 @@ https://user-images.githubusercontent.com/92941081/233832354-9eb7d7fc-cf8a-46e5-
 ## Importat notes
 
 - **This package was only tested with an original DS4 Controller via USB. Bluetooth was not tested. DS4 Compatible Controllers were not tested either.**
+- The controller rumble function temporary fails if multiple events try to activate it in a short period of time.
 
 ## Future improvements ✔️
 
@@ -225,7 +239,7 @@ Maintainers:
 
 ## License
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-yellowgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0) 
+[![License](https://img.shields.io/badge/License-Apache_2.0-yellowgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 This work is licensed under a [APACHE LICENSE, VERSION 2.0][apache2.0].
 
