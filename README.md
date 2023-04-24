@@ -136,7 +136,7 @@ The controller will softly rumble for `1s`. Also, the LED bar will iluminate in 
 
 #### Controller enabled.
 
-The controller will hardly rumble for `25ms`. Also, the LED bar will iluminate in steady green light. 🟢
+The controller will hardly rumble for `250ms`. Also, the LED bar will iluminate in steady green light. 🟢
 
 > This is the only mode where the robot will actually move! Is activated by **HOLDING** the *dead-man* button.
 
@@ -144,7 +144,7 @@ The controller will hardly rumble for `25ms`. Also, the LED bar will iluminate i
 
 #### Controller disabled.
 
-The controller will hardly rumble for `50ms`. Also, the LED bar will iluminate in slowly blinking yellow light. 🟡
+The controller will hardly rumble for `500ms`. Also, the LED bar will iluminate in slowly blinking yellow light. 🟡
 
 > After a while in this state, the controller will change to `IDLE` mode. The light will became steady dim blue 🔵.
 
