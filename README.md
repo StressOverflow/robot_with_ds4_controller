@@ -246,7 +246,7 @@ This work is licensed under a [APACHE LICENSE, VERSION 2.0][apache2.0].
 [apache2.0]: https://www.apache.org/licenses/LICENSE-2.0
 
 [Universidad Rey Juan Carlos]: https://www.urjc.es/
-[StressOverflow]: https://github.com/orgs/Docencia-fmrico/teams/stressoverflow
+[StressOverflow]: https://github.com/StressOverflow
 [Carlos Escarcena]: https://github.com/cescarcena2021
 [Arantxa García]: https://github.com/arantxagb
 [Diego García]: https://github.com/dgarcu
