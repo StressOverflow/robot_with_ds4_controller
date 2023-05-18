@@ -1,4 +1,4 @@
-# Map with controller 🎮
+# Control robot with DS4 Controller 🎮
 
 [![distro](https://img.shields.io/badge/Ubuntu%2022-Jammy%20Jellyfish-violet)](https://releases.ubuntu.com/22.04/)
 [![distro](https://img.shields.io/badge/ROS2-Humble-blue)](https://docs.ros.org/en/humble/index.html)
@@ -240,7 +240,7 @@ https://user-images.githubusercontent.com/92941081/233832351-5fe179eb-ce52-4793-
 https://user-images.githubusercontent.com/92941081/233832354-9eb7d7fc-cf8a-46e5-88b8-9888fea8fedc.mp4
 
 
-## Importat notes
+## Important notes
 
 - **This package was only tested with an original DS4 Controller via USB. Bluetooth was not tested. DS4 Compatible Controllers were not tested either.**
 - The controller rumble function temporary fails if multiple events try to activate it in a short period of time.
@@ -273,7 +273,7 @@ This work is licensed under a [APACHE LICENSE, VERSION 2.0][apache2.0].
 [apache2.0]: https://www.apache.org/licenses/LICENSE-2.0
 
 [Universidad Rey Juan Carlos]: https://www.urjc.es/
-[StressOverflow]: https://github.com/orgs/Docencia-fmrico/teams/stressoverflow
+[StressOverflow]: https://github.com/StressOverflow
 [Carlos Escarcena]: https://github.com/cescarcena2021
 [Arantxa García]: https://github.com/arantxagb
 [Diego García]: https://github.com/dgarcu
